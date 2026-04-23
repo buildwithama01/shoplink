@@ -23,7 +23,7 @@ export default function ProductDetail() {
       <div className="container py-8">
         <div className="grid lg:grid-cols-2 gap-8">
           <div>
-            <div className="aspect-square rounded-xl bg-muted flex items-center justify-center">
+            <div className="aspect-square rounded-lg bg-muted flex items-center justify-center">
               <ImageIcon className="h-20 w-20 text-muted-foreground/40" />
             </div>
             <div className="grid grid-cols-3 gap-3 mt-3">

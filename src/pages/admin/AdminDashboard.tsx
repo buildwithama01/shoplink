@@ -19,7 +19,7 @@ export default function AdminDashboard() {
           <StatCard label="Products" value={String(stats.productsCount)} icon={Package} accent="muted" />
         </div>
 
-        <Card className="rounded-xl shadow-sm overflow-hidden">
+        <Card className="rounded-lg overflow-hidden">
           <div className="p-5 border-b">
             <h2 className="font-semibold">Recent Orders</h2>
           </div>
