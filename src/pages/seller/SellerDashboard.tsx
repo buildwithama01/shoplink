@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   DollarSign,
   ShoppingBag,
@@ -163,6 +163,15 @@ function ShareStoreCard() {
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function SellerDashboard() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const isComplete = localStorage.getItem("onboarding_complete");
+    if (!isComplete) {
+      navigate("/seller/onboarding");
+    }
+  }, [navigate]);
+
   return (
     <SellerLayout>
       <SellerTopBar

@@ -1,10 +1,4 @@
 import {
-  Sparkles,
-  Smartphone,
-  Laptop,
-  Cable,
-  Headphones,
-  LucideIcon,
   Search,
   Filter,
   X,
@@ -16,13 +10,6 @@ import { ProductCard } from "@/components/shop/ProductCard";
 import { categories, products, store } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
 
-const iconMap: Record<string, LucideIcon> = {
-  Sparkles,
-  Smartphone,
-  Laptop,
-  Cable,
-  Headphones,
-};
 
 export default function Storefront() {
   const [activeCategory, setActiveCategory] = useState("all");
@@ -176,20 +163,18 @@ export default function Storefront() {
         {/* Category pills */}
         <div className="mt-6 flex gap-2 overflow-x-auto pb-2 -mx-5 px-5 sm:mx-0 sm:px-0 scrollbar-none">
           {categories.map((c) => {
-            const Icon = iconMap[c.icon];
             const isActive = activeCategory === c.id;
             return (
               <button
                 key={c.id}
                 onClick={() => setActiveCategory(c.id)}
                 className={cn(
-                  "inline-flex items-center gap-2 rounded-full px-4 h-10 text-sm font-medium border whitespace-nowrap transition-all",
+                  "inline-flex items-center justify-center rounded-full px-5 h-10 text-sm font-medium border whitespace-nowrap transition-all",
                   isActive
                     ? "bg-ink text-ink-foreground border-ink"
                     : "bg-background text-foreground border-border hover:border-foreground/30"
                 )}
               >
-                <Icon className="h-4 w-4" />
                 {c.label}
               </button>
             );

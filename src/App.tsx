@@ -21,6 +21,7 @@ import SellerOrders from "./pages/seller/SellerOrders";
 import SellerOrderDetail from "./pages/seller/SellerOrderDetail";
 import SellerCategories from "./pages/seller/SellerCategories";
 import SellerSettings from "./pages/seller/SellerSettings";
+import SellerOnboarding from "./pages/seller/SellerOnboarding";
 
 import LandingPage from "./pages/LandingPage";
 
@@ -59,6 +60,7 @@ const App = () => (
 
           {/* Seller */}
           <Route path="/seller/login" element={<SellerLogin />} />
+          <Route path="/seller/onboarding" element={<SellerOnboarding />} />
           <Route path="/seller" element={<SellerDashboard />} />
           <Route path="/seller/products" element={<SellerProducts />} />
           <Route path="/seller/products/new" element={<SellerProductForm />} />
