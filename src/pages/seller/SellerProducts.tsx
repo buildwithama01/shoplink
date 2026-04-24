@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Plus, Search, Image as ImageIcon, Pencil, Trash2, ChevronLeft, ChevronRight } from "lucide-react";
-import { AdminLayout, AdminTopBar } from "@/components/admin/AdminSidebar";
+import { SellerLayout, SellerTopBar } from "@/components/seller/SellerSidebar";
 import { StatusBadge } from "@/components/shop/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,16 +9,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { products, formatNGN, categories } from "@/lib/mock-data";
 
-export default function AdminProducts() {
+export default function SellerProducts() {
   return (
-    <AdminLayout>
-      <AdminTopBar
+    <SellerLayout>
+      <SellerTopBar
         count={String(products.length)}
         title="Products"
         subtitle="Manage your catalog"
         action={
           <Button asChild className="gap-1.5">
-            <Link to="/admin/products/new"><Plus className="h-4 w-4" /> Add product</Link>
+            <Link to="/seller/products/new"><Plus className="h-4 w-4" /> Add product</Link>
           </Button>
         }
       />
@@ -65,7 +65,7 @@ export default function AdminProducts() {
                   <TableCell><StatusBadge status={p.isActive ? "Active" : "Inactive"} /></TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-1">
-                      <Button asChild variant="ghost" size="icon" className="h-8 w-8"><Link to={`/admin/products/${p.id}/edit`}><Pencil className="h-3.5 w-3.5" /></Link></Button>
+                      <Button asChild variant="ghost" size="icon" className="h-8 w-8"><Link to={`/seller/products/${p.id}/edit`}><Pencil className="h-3.5 w-3.5" /></Link></Button>
                       <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive">
                         <Trash2 className="h-3.5 w-3.5" />
                       </Button>
@@ -84,6 +84,6 @@ export default function AdminProducts() {
           </div>
         </div>
       </div>
-    </AdminLayout>
+    </SellerLayout>
   );
 }

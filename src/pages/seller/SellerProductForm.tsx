@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { AdminLayout, AdminTopBar } from "@/components/admin/AdminSidebar";
+import { SellerLayout, SellerTopBar } from "@/components/seller/SellerSidebar";
 import { ImageUploader } from "@/components/shop/ImageUploader";
 import { VariantBuilder } from "@/components/shop/VariantBuilder";
 import { Input } from "@/components/ui/input";
@@ -20,22 +20,22 @@ function Panel({ title, children }: { title: string; children: React.ReactNode }
   );
 }
 
-export default function AdminProductForm() {
+export default function SellerProductForm() {
   return (
-    <AdminLayout>
-      <AdminTopBar
+    <SellerLayout>
+      <SellerTopBar
         title="Add product"
         subtitle="Create a new product in your catalog"
         action={
           <>
-            <Button asChild variant="outline"><Link to="/admin/products">Cancel</Link></Button>
+            <Button asChild variant="outline"><Link to="/seller/products">Cancel</Link></Button>
             <Button>Save product</Button>
           </>
         }
       />
 
       <div className="p-7">
-        <Link to="/admin/products" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+        <Link to="/seller/products" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft className="h-4 w-4" /> Back to products
         </Link>
 
@@ -84,6 +84,6 @@ export default function AdminProductForm() {
           </div>
         </div>
       </div>
-    </AdminLayout>
+    </SellerLayout>
   );
 }

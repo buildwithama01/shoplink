@@ -1,25 +1,31 @@
 import { Link } from "react-router-dom";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
-export default function AdminLogin() {
+export default function SellerLogin() {
   return (
     <div className="min-h-screen bg-canvas grid lg:grid-cols-2">
       {/* Left — promo panel */}
       <div className="hidden lg:flex p-5">
-        <div className="flex-1 rounded-[28px] bg-ink text-ink-foreground p-12 flex flex-col justify-between">
+        <div className="flex-1 rounded-[28px] bg-tile-mint p-12 flex flex-col justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="h-8 w-8 rounded-xl bg-background text-foreground flex items-center justify-center text-sm font-bold">SL</div>
-            <span className="font-semibold tracking-tight">ShopLink Core</span>
+            <div className="h-8 w-8 rounded-xl bg-ink text-ink-foreground flex items-center justify-center text-sm font-semibold">S</div>
+            <span className="font-semibold tracking-tight">ShopLink</span>
           </div>
           <div>
-            <div className="text-xs uppercase tracking-[0.18em] font-medium text-ink-foreground/60">Command Center</div>
+            <div className="text-xs uppercase tracking-[0.18em] font-medium text-foreground/60">Sell anywhere</div>
             <h2 className="mt-3 text-4xl font-semibold tracking-tight leading-tight max-w-md">
-              Manage the entire ShopLink ecosystem.
+              Run your storefront like the world's best brands.
             </h2>
+            <p className="mt-3 text-sm text-foreground/70 max-w-sm">
+              A friendly seller built for small teams who care about details.
+            </p>
           </div>
           <div className="flex gap-2">
-            <span className="h-1.5 w-6 rounded-full bg-background" />
-            <span className="h-1.5 w-1.5 rounded-full bg-background/30" />
+            <span className="h-1.5 w-6 rounded-full bg-ink" />
+            <span className="h-1.5 w-1.5 rounded-full bg-ink/30" />
+            <span className="h-1.5 w-1.5 rounded-full bg-ink/30" />
           </div>
         </div>
       </div>
@@ -28,15 +34,15 @@ export default function AdminLogin() {
       <div className="flex items-center justify-center p-5">
         <div className="w-full max-w-sm">
           <div className="lg:hidden flex items-center gap-2.5 mb-8">
-            <div className="h-8 w-8 rounded-xl bg-ink text-ink-foreground flex items-center justify-center text-sm font-bold">SL</div>
-            <span className="font-semibold tracking-tight">ShopLink Core</span>
+            <div className="h-8 w-8 rounded-xl bg-ink text-ink-foreground flex items-center justify-center text-sm font-semibold">S</div>
+            <span className="font-semibold tracking-tight">ShopLink</span>
           </div>
-          <h1 className="text-3xl font-semibold tracking-tight">Super Admin</h1>
-          <p className="text-sm text-muted-foreground mt-1.5">Sign in to control the platform</p>
+          <h1 className="text-3xl font-semibold tracking-tight">Welcome back</h1>
+          <p className="text-sm text-muted-foreground mt-1.5">Sign in to manage your store</p>
 
           <div className="mt-8">
             <Button asChild className="w-full flex items-center justify-center gap-2 bg-background border border-border text-foreground hover:bg-muted" size="lg" type="button">
-              <Link to="/admin">
+              <Link to="/seller">
                 <svg className="h-5 w-5" viewBox="0 0 24 24">
                   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
                   <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.16v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -47,6 +53,10 @@ export default function AdminLogin() {
               </Link>
             </Button>
           </div>
+
+          <p className="mt-6 text-xs text-muted-foreground text-center">
+            New to ShopLink? <a href="#" className="text-foreground font-medium hover:underline">Create an account</a>
+          </p>
         </div>
       </div>
     </div>

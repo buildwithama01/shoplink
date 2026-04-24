@@ -115,20 +115,6 @@ export default function ProductDetail() {
               <Button size="lg" className="flex-1">Buy now</Button>
             </div>
 
-            {/* Trust badges */}
-            <div className="mt-6 grid grid-cols-3 gap-2 text-center">
-              {[
-                { icon: Truck, label: "Free pickup" },
-                { icon: ShieldCheck, label: "1-yr warranty" },
-                { icon: RotateCcw, label: "7-day returns" },
-              ].map((t) => (
-                <div key={t.label} className="rounded-2xl bg-background border border-border/60 py-3">
-                  <t.icon className="h-4 w-4 mx-auto text-muted-foreground" />
-                  <div className="text-[11px] text-muted-foreground mt-1">{t.label}</div>
-                </div>
-              ))}
-            </div>
-
             <Accordion type="single" collapsible className="mt-6" defaultValue="desc">
               <AccordionItem value="desc" className="border-b-0 border-t border-border/60">
                 <AccordionTrigger className="text-sm hover:no-underline">Description</AccordionTrigger>

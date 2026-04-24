@@ -11,14 +11,24 @@ import ProductDetail from "./pages/storefront/ProductDetail";
 import CartPage from "./pages/storefront/CartPage";
 import Checkout from "./pages/storefront/Checkout";
 import OrderTracking from "./pages/storefront/OrderTracking";
+import OrderConfirmation from "./pages/storefront/OrderConfirmation";
 
+import SellerLogin from "./pages/seller/SellerLogin";
+import SellerDashboard from "./pages/seller/SellerDashboard";
+import SellerProducts from "./pages/seller/SellerProducts";
+import SellerProductForm from "./pages/seller/SellerProductForm";
+import SellerOrders from "./pages/seller/SellerOrders";
+import SellerOrderDetail from "./pages/seller/SellerOrderDetail";
+import SellerCategories from "./pages/seller/SellerCategories";
+import SellerSettings from "./pages/seller/SellerSettings";
+
+import LandingPage from "./pages/LandingPage";
+
+// Super Admin
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminProducts from "./pages/admin/AdminProducts";
-import AdminProductForm from "./pages/admin/AdminProductForm";
-import AdminOrders from "./pages/admin/AdminOrders";
-import AdminOrderDetail from "./pages/admin/AdminOrderDetail";
-import AdminCategories from "./pages/admin/AdminCategories";
+import AdminStores from "./pages/admin/AdminStores";
+import AdminUsers from "./pages/admin/AdminUsers";
 import AdminSettings from "./pages/admin/AdminSettings";
 
 const queryClient = new QueryClient();
@@ -30,7 +40,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to={`/${store.slug}`} replace />} />
+          <Route path="/" element={<LandingPage />} />
 
           {/* Storefront */}
           <Route path="/:storeSlug" element={<Storefront />} />
@@ -38,17 +48,25 @@ const App = () => (
           <Route path="/:storeSlug/cart" element={<CartPage />} />
           <Route path="/:storeSlug/checkout" element={<Checkout />} />
           <Route path="/:storeSlug/order/:token" element={<OrderTracking />} />
+          <Route path="/:storeSlug/order-confirmation" element={<OrderConfirmation />} />
 
-          {/* Admin */}
+          {/* Main Admin (Platform) */}
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/admin/products" element={<AdminProducts />} />
-          <Route path="/admin/products/new" element={<AdminProductForm />} />
-          <Route path="/admin/products/:id/edit" element={<AdminProductForm />} />
-          <Route path="/admin/orders" element={<AdminOrders />} />
-          <Route path="/admin/orders/:id" element={<AdminOrderDetail />} />
-          <Route path="/admin/categories" element={<AdminCategories />} />
+          <Route path="/admin/stores" element={<AdminStores />} />
+          <Route path="/admin/users" element={<AdminUsers />} />
           <Route path="/admin/settings" element={<AdminSettings />} />
+
+          {/* Seller */}
+          <Route path="/seller/login" element={<SellerLogin />} />
+          <Route path="/seller" element={<SellerDashboard />} />
+          <Route path="/seller/products" element={<SellerProducts />} />
+          <Route path="/seller/products/new" element={<SellerProductForm />} />
+          <Route path="/seller/products/:id/edit" element={<SellerProductForm />} />
+          <Route path="/seller/orders" element={<SellerOrders />} />
+          <Route path="/seller/orders/:id" element={<SellerOrderDetail />} />
+          <Route path="/seller/categories" element={<SellerCategories />} />
+          <Route path="/seller/settings" element={<SellerSettings />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

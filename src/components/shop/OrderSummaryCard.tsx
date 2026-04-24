@@ -1,9 +1,12 @@
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { useNavigate, useParams } from "react-router-dom";
 import { cartItems, formatNGN } from "@/lib/mock-data";
 
 export function OrderSummaryCard({ shippingFee = 5000 }: { shippingFee?: number }) {
+  const { storeSlug } = useParams();
+  const navigate = useNavigate();
   const subtotal = cartItems.reduce((s, i) => s + i.price * i.qty, 0);
   const total = subtotal + shippingFee;
   return (
@@ -29,7 +32,11 @@ export function OrderSummaryCard({ shippingFee = 5000 }: { shippingFee?: number 
         <span className="text-sm text-muted-foreground">Total</span>
         <span className="text-2xl font-semibold tracking-tight">{formatNGN(total)}</span>
       </div>
-      <Button size="lg" className="w-full mt-6 gap-2">
+      <Button 
+        size="lg" 
+        className="w-full mt-6 gap-2"
+        onClick={() => navigate(`/${storeSlug}/order-confirmation`)}
+      >
         Place order
         <ArrowRight className="h-4 w-4" />
       </Button>

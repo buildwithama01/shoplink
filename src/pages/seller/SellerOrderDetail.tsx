@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { Image as ImageIcon, Printer, Truck, XCircle, MessageCircle, ArrowLeft } from "lucide-react";
-import { AdminLayout, AdminTopBar } from "@/components/admin/AdminSidebar";
+import { SellerLayout, SellerTopBar } from "@/components/seller/SellerSidebar";
 import { StatusBadge } from "@/components/shop/StatusBadge";
 import { OrderTimeline } from "@/components/shop/OrderTimeline";
 import { Button } from "@/components/ui/button";
@@ -17,15 +17,15 @@ function Panel({ title, children }: { title: string; children: React.ReactNode }
   );
 }
 
-export default function AdminOrderDetail() {
+export default function SellerOrderDetail() {
   const { id } = useParams();
   const order = orders.find((o) => o.id === id) ?? orders[0];
   const itemsTotal = order.items.reduce((s, i) => s + i.price * i.qty, 0) || order.total;
   const shipping = order.shipping === "Delivery" ? 5000 : 0;
 
   return (
-    <AdminLayout>
-      <AdminTopBar
+    <SellerLayout>
+      <SellerTopBar
         count={`#${order.orderNumber}`}
         title="Order detail"
         subtitle={order.date}
@@ -33,7 +33,7 @@ export default function AdminOrderDetail() {
       />
 
       <div className="p-7">
-        <Link to="/admin/orders" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+        <Link to="/seller/orders" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft className="h-4 w-4" /> Back to orders
         </Link>
 
@@ -99,6 +99,6 @@ export default function AdminOrderDetail() {
           </div>
         </div>
       </div>
-    </AdminLayout>
+    </SellerLayout>
   );
 }

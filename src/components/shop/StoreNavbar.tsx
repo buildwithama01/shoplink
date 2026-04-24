@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Search, ShoppingBag, Heart } from "lucide-react";
+import { Search, ShoppingBag } from "lucide-react";
 import { CartDrawer } from "./CartDrawer";
 import { cartItems, store } from "@/lib/mock-data";
 
@@ -16,26 +16,9 @@ export function StoreNavbar() {
           <span className="font-semibold text-[15px] tracking-tight">{store.name}</span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-1 bg-muted/70 rounded-full p-1">
-          {["Shop", "New", "Brands", "About"].map((l, i) => (
-            <Link
-              key={l}
-              to={`/${store.slug}`}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                i === 0 ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {l}
-            </Link>
-          ))}
-        </div>
-
         <div className="flex items-center gap-1.5">
           <button className="hidden sm:flex h-10 w-10 items-center justify-center rounded-full hover:bg-muted transition-colors">
             <Search className="h-[18px] w-[18px]" />
-          </button>
-          <button className="hidden sm:flex h-10 w-10 items-center justify-center rounded-full hover:bg-muted transition-colors">
-            <Heart className="h-[18px] w-[18px]" />
           </button>
           <button
             onClick={() => setCartOpen(true)}

@@ -1,4 +1,4 @@
-import { Image as ImageIcon, Heart, ArrowUpRight } from "lucide-react";
+import { Image as ImageIcon, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Product, formatNGN, store } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
@@ -20,13 +20,6 @@ export function ProductCard({ product, compact = false, index = 0 }: { product: 
     >
       <div className={cn("relative aspect-[4/5] flex items-center justify-center overflow-hidden", tile)}>
         <ImageIcon className="h-12 w-12 text-foreground/20 transition-transform duration-500 group-hover:scale-105" />
-
-        <button
-          onClick={(e) => { e.preventDefault(); }}
-          className="absolute top-3 right-3 h-8 w-8 rounded-full bg-background/90 backdrop-blur flex items-center justify-center hover:bg-background transition-colors"
-        >
-          <Heart className="h-3.5 w-3.5" />
-        </button>
 
         <div className="absolute top-3 left-3 inline-flex items-center gap-1 rounded-full bg-background/90 backdrop-blur px-2.5 py-1 text-[11px] font-medium">
           {product.brand}

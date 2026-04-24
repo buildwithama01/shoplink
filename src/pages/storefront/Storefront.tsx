@@ -1,17 +1,59 @@
-import { Sparkles, Smartphone, Laptop, Cable, Headphones, LucideIcon, ArrowUpRight, Search, Filter } from "lucide-react";
-import { useState } from "react";
+import {
+  Sparkles,
+  Smartphone,
+  Laptop,
+  Cable,
+  Headphones,
+  LucideIcon,
+  Search,
+  Filter,
+  X,
+} from "lucide-react";
+import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { StoreNavbar } from "@/components/shop/StoreNavbar";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { categories, products, store } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
 
-const iconMap: Record<string, LucideIcon> = { Sparkles, Smartphone, Laptop, Cable, Headphones };
+const iconMap: Record<string, LucideIcon> = {
+  Sparkles,
+  Smartphone,
+  Laptop,
+  Cable,
+  Headphones,
+};
 
 export default function Storefront() {
-  const [active, setActive] = useState("all");
-  const filtered = active === "all" ? products : products.filter((p) => p.category === active);
-  const featured = products.slice(0, 2);
+  const [activeCategory, setActiveCategory] = useState("all");
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState<"default" | "price-asc" | "price-desc">(
+    "default"
+  );
+  const [filterOpen, setFilterOpen] = useState(false);
+
+  const filtered = useMemo(() => {
+    let list =
+      activeCategory === "all"
+        ? products
+        : products.filter((p) => p.category === activeCategory);
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      list = list.filter(
+        (p) =>
+          p.name.toLowerCase().includes(q) ||
+          p.brand.toLowerCase().includes(q) ||
+          p.category.toLowerCase().includes(q)
+      );
+    }
+
+    if (sortBy === "price-asc") list = [...list].sort((a, b) => a.price - b.price);
+    if (sortBy === "price-desc") list = [...list].sort((a, b) => b.price - a.price);
+
+    return list;
+  }, [activeCategory, searchQuery, sortBy]);
 
   return (
     <div className="min-h-screen bg-canvas">
@@ -19,40 +61,132 @@ export default function Storefront() {
 
       <div className="container py-6 lg:py-8">
         {/* Page header */}
-        <div className="flex items-end justify-between flex-wrap gap-4">
-          <div>
-            <div className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground font-medium">
-              Verified Seller · Lagos, NG
+        <div className="bg-background rounded-[32px] p-8 md:p-12 min-h-[300px] flex flex-col justify-end border border-border/60">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+            <div>
+              <h1 className="text-6xl sm:text-8xl font-semibold tracking-tight leading-none">
+                Explore <br />
+                <span className="text-muted-foreground/40">{store.name}</span>
+              </h1>
             </div>
-            <h1 className="mt-2 text-4xl sm:text-5xl font-semibold tracking-tight">
-              Explore <span className="text-muted-foreground/60">{store.name}</span>
-            </h1>
+            <div className="flex items-center gap-2 sm:pb-2">
+              {/* Filter button */}
+              <button
+                onClick={() => setFilterOpen((v) => !v)}
+                className={cn(
+                  "inline-flex items-center gap-2 h-10 pl-4 pr-5 rounded-full border text-sm font-medium transition-colors",
+                  filterOpen
+                    ? "bg-ink text-ink-foreground border-ink"
+                    : "bg-canvas border-border hover:bg-muted"
+                )}
+              >
+                <Filter className="h-4 w-4" />
+                Filters
+                {sortBy !== "default" && (
+                  <span className="ml-1 h-4 w-4 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center font-bold">
+                    1
+                  </span>
+                )}
+              </button>
+
+              {/* Search button */}
+              <button
+                onClick={() => {
+                  setSearchOpen((v) => !v);
+                  if (searchOpen) setSearchQuery("");
+                }}
+                className={cn(
+                  "h-10 w-10 rounded-full border flex items-center justify-center transition-colors",
+                  searchOpen
+                    ? "bg-ink text-ink-foreground border-ink"
+                    : "bg-canvas border-border hover:bg-muted"
+                )}
+              >
+                {searchOpen ? (
+                  <X className="h-4 w-4" />
+                ) : (
+                  <Search className="h-4 w-4" />
+                )}
+              </button>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <button className="inline-flex items-center gap-2 h-10 pl-4 pr-5 rounded-full bg-background border border-border text-sm font-medium hover:bg-muted transition-colors">
-              <Filter className="h-4 w-4" />
-              Filters
-            </button>
-            <button className="h-10 w-10 rounded-full bg-background border border-border flex items-center justify-center hover:bg-muted transition-colors">
-              <Search className="h-4 w-4" />
-            </button>
-          </div>
+
+          {/* Inline search bar */}
+          {searchOpen && (
+            <div className="mt-6 relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+              <input
+                autoFocus
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search products, brands…"
+                className="w-full h-12 pl-11 pr-4 rounded-2xl border border-border bg-canvas text-sm outline-none focus:border-foreground/40 focus:ring-2 focus:ring-foreground/10 transition-all"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full bg-muted flex items-center justify-center hover:bg-muted/70"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              )}
+            </div>
+          )}
         </div>
+
+        {/* Filter panel */}
+        {filterOpen && (
+          <div className="mt-3 rounded-[20px] bg-background border border-border/60 p-5">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-sm font-semibold">Sort by price</span>
+              {sortBy !== "default" && (
+                <button
+                  onClick={() => setSortBy("default")}
+                  className="text-xs text-muted-foreground hover:text-foreground underline underline-offset-2"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+            <div className="flex gap-2 flex-wrap">
+              {(
+                [
+                  { value: "default", label: "Default" },
+                  { value: "price-asc", label: "Price: Low → High" },
+                  { value: "price-desc", label: "Price: High → Low" },
+                ] as const
+              ).map((opt) => (
+                <button
+                  key={opt.value}
+                  onClick={() => setSortBy(opt.value)}
+                  className={cn(
+                    "h-9 px-4 rounded-full text-sm border font-medium transition-colors",
+                    sortBy === opt.value
+                      ? "bg-ink text-ink-foreground border-ink"
+                      : "bg-canvas border-border hover:border-foreground/30"
+                  )}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Category pills */}
         <div className="mt-6 flex gap-2 overflow-x-auto pb-2 -mx-5 px-5 sm:mx-0 sm:px-0 scrollbar-none">
           {categories.map((c) => {
             const Icon = iconMap[c.icon];
-            const isActive = active === c.id;
+            const isActive = activeCategory === c.id;
             return (
               <button
                 key={c.id}
-                onClick={() => setActive(c.id)}
+                onClick={() => setActiveCategory(c.id)}
                 className={cn(
                   "inline-flex items-center gap-2 rounded-full px-4 h-10 text-sm font-medium border whitespace-nowrap transition-all",
                   isActive
                     ? "bg-ink text-ink-foreground border-ink"
-                    : "bg-background text-foreground border-border hover:border-foreground/30",
+                    : "bg-background text-foreground border-border hover:border-foreground/30"
                 )}
               >
                 <Icon className="h-4 w-4" />
@@ -62,72 +196,50 @@ export default function Storefront() {
           })}
         </div>
 
-        {/* Hero / Featured grid */}
-        <div className="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
-          {/* Promo tile */}
-          <div className="lg:col-span-2 grid sm:grid-cols-2 gap-4">
-            <div className="relative rounded-[24px] bg-tile-mint p-7 min-h-[260px] flex flex-col justify-between overflow-hidden">
-              <div>
-                <div className="text-xs uppercase tracking-wider font-medium text-foreground/60">Limited drop</div>
-                <div className="mt-3 text-2xl font-semibold tracking-tight leading-tight max-w-[12ch]">
-                  Get up to 50% off premium gadgets
-                </div>
-              </div>
-              <button className="self-start inline-flex items-center gap-1.5 rounded-full bg-background px-4 py-2 text-sm font-medium hover:bg-background/80 transition-colors">
-                Shop the sale
-                <ArrowUpRight className="h-4 w-4" />
-              </button>
-            </div>
-
-            <div className="relative rounded-[24px] bg-tile-butter p-7 min-h-[260px] flex flex-col justify-between overflow-hidden">
-              <div>
-                <div className="text-xs uppercase tracking-wider font-medium text-foreground/60">This week</div>
-                <div className="mt-3 text-2xl font-semibold tracking-tight leading-tight max-w-[14ch]">
-                  Weekend essentials, ready to ship
-                </div>
-              </div>
-              <div className="text-sm text-foreground/70">Free pickup in Lagos</div>
-            </div>
-          </div>
-
-          {/* Featured product */}
-          {featured[0] && (
-            <Link
-              to={`/${store.slug}/p/${featured[0].slug}`}
-              className="group relative rounded-[24px] bg-tile-peach min-h-[260px] p-7 flex flex-col justify-between overflow-hidden"
-            >
-              <div className="flex items-center gap-1.5">
-                <span className="h-2 w-2 rounded-full bg-foreground" />
-                <span className="h-2 w-2 rounded-full bg-foreground/30" />
-              </div>
-              <div className="flex items-end justify-between gap-3">
-                <div>
-                  <div className="text-[11px] uppercase tracking-wider text-foreground/60">Your Choice</div>
-                  <div className="mt-1 font-semibold text-lg leading-tight max-w-[14ch]">{featured[0].name}</div>
-                </div>
-                <div className="inline-flex items-center gap-1 rounded-full bg-ink text-ink-foreground px-3 py-1.5 text-xs font-semibold">
-                  Buy now
-                  <ArrowUpRight className="h-3 w-3" />
-                </div>
-              </div>
-            </Link>
-          )}
-        </div>
-
         {/* Product grid */}
         <div className="mt-10 flex items-baseline justify-between">
-          <h2 className="text-xl font-semibold tracking-tight">All products</h2>
-          <span className="text-sm text-muted-foreground">{filtered.length} items</span>
+          <h2 className="text-xl font-semibold tracking-tight">
+            {activeCategory === "all"
+              ? "All products"
+              : categories.find((c) => c.id === activeCategory)?.label}
+          </h2>
+          <span className="text-sm text-muted-foreground">
+            {filtered.length} item{filtered.length !== 1 ? "s" : ""}
+          </span>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-5">
-          {filtered.map((p, i) => (
-            <ProductCard key={p.id} product={p} index={i} />
-          ))}
-        </div>
+        {filtered.length === 0 ? (
+          <div className="mt-16 flex flex-col items-center justify-center text-center gap-3 py-16">
+            <div className="h-16 w-16 rounded-2xl bg-muted flex items-center justify-center">
+              <Search className="h-7 w-7 text-muted-foreground" />
+            </div>
+            <p className="font-semibold text-lg">No products found</p>
+            <p className="text-sm text-muted-foreground">
+              Try a different search term or category.
+            </p>
+            <button
+              onClick={() => {
+                setSearchQuery("");
+                setActiveCategory("all");
+                setSortBy("default");
+              }}
+              className="mt-2 text-sm underline underline-offset-2 text-muted-foreground hover:text-foreground"
+            >
+              Clear all filters
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-5">
+            {filtered.map((p, i) => (
+              <ProductCard key={p.id} product={p} index={i} />
+            ))}
+          </div>
+        )}
 
         <footer className="mt-16 border-t border-border/60 py-8 text-xs text-muted-foreground flex flex-wrap items-center justify-between gap-3">
-          <span>© {new Date().getFullYear()} {store.name}. All rights reserved.</span>
+          <span>
+            © {new Date().getFullYear()} {store.name}. All rights reserved.
+          </span>
           <span>Powered by ShopLink</span>
         </footer>
       </div>

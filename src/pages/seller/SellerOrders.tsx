@@ -1,15 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import { AdminLayout, AdminTopBar } from "@/components/admin/AdminSidebar";
+import { SellerLayout, SellerTopBar } from "@/components/seller/SellerSidebar";
 import { StatusBadge } from "@/components/shop/StatusBadge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { orders, formatNGN } from "@/lib/mock-data";
 
-export default function AdminOrders() {
+export default function SellerOrders() {
   const navigate = useNavigate();
   return (
-    <AdminLayout>
-      <AdminTopBar count={String(orders.length)} title="Orders" subtitle="All time" />
+    <SellerLayout>
+      <SellerTopBar count={String(orders.length)} title="Orders" subtitle="All time" />
 
       <div className="p-7 space-y-5">
         <Tabs defaultValue="all">
@@ -26,32 +26,32 @@ export default function AdminOrders() {
             <TableHeader>
               <TableRow className="hover:bg-transparent">
                 <TableHead>Order #</TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Items</TableHead>
+                <TableHead className="hidden sm:table-cell">Customer</TableHead>
+                <TableHead className="hidden md:table-cell">Items</TableHead>
                 <TableHead>Total</TableHead>
-                <TableHead>Payment</TableHead>
-                <TableHead>Shipping</TableHead>
+                <TableHead className="hidden lg:table-cell">Payment</TableHead>
+                <TableHead className="hidden lg:table-cell">Shipping</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead className="text-right">Date</TableHead>
+                <TableHead className="text-right whitespace-nowrap">Date</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {orders.map((o) => (
-                <TableRow key={o.id} className="cursor-pointer" onClick={() => navigate(`/admin/orders/${o.id}`)}>
+                <TableRow key={o.id} className="cursor-pointer" onClick={() => navigate(`/seller/orders/${o.id}`)}>
                   <TableCell className="font-medium">#{o.orderNumber}</TableCell>
-                  <TableCell>{o.customerName}</TableCell>
-                  <TableCell className="text-muted-foreground">{o.itemsCount}</TableCell>
+                  <TableCell className="hidden sm:table-cell">{o.customerName}</TableCell>
+                  <TableCell className="hidden md:table-cell text-muted-foreground">{o.itemsCount}</TableCell>
                   <TableCell>{formatNGN(o.total)}</TableCell>
-                  <TableCell className="text-muted-foreground text-xs">{o.paymentMethod}</TableCell>
-                  <TableCell className="text-muted-foreground text-xs">{o.shipping}</TableCell>
+                  <TableCell className="hidden lg:table-cell text-muted-foreground text-xs">{o.paymentMethod}</TableCell>
+                  <TableCell className="hidden lg:table-cell text-muted-foreground text-xs">{o.shipping}</TableCell>
                   <TableCell><StatusBadge status={o.status} /></TableCell>
-                  <TableCell className="text-right text-muted-foreground text-xs">{o.date}</TableCell>
+                  <TableCell className="text-right text-muted-foreground text-xs whitespace-nowrap">{o.date}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </div>
       </div>
-    </AdminLayout>
+    </SellerLayout>
   );
 }
