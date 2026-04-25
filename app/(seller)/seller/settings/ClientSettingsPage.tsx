@@ -285,8 +285,8 @@ export function ClientSettingsPage({ store, ordersThisMonth }: { store: any; ord
                 <ImageUploader
                   pathPrefix={store.id}
                   bucket="store-assets"
-                  onUpload={url => setLogoUrl(url)}
-                  existingUrl={store.logo_url}
+                  defaultUrls={logoUrl ? [logoUrl] : []}
+                  onChange={(urls: string[]) => setLogoUrl(urls[0] ?? "")}
                 />
               </Panel>
               <Panel title="Brand color">

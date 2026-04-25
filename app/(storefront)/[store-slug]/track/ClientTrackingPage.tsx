@@ -6,7 +6,7 @@ import { StoreNavbar } from "@/components/shop/StoreNavbar";
 import { OrderTimeline } from "@/components/shop/OrderTimeline";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { StatusBadge } from "@/components/shop/StatusBadge";
+import { StatusBadge, type Status } from "@/components/shop/StatusBadge";
 import { Search, Package, MapPin, CreditCard, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -79,8 +79,8 @@ export function ClientTrackingPage({
   const timelineSteps = order ? buildTimeline(order) : [];
   const shipping = parseFloat(order?.shipping_fee) || 0;
 
-  const statusLabel = (s: string) =>
-    ({ pending: "Pending", processing: "Processing", shipped: "Shipped", delivered: "Delivered", cancelled: "Cancelled" }[s] || s);
+  const statusLabel = (s: string): Status =>
+    (({ pending: "Pending", processing: "Processing", shipped: "Shipped", delivered: "Delivered", cancelled: "Cancelled" } as Record<string, Status>)[s] ?? "Pending");
 
   return (
     <div className="min-h-screen bg-canvas">
