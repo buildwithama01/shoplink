@@ -22,7 +22,7 @@ export function ClientCategories({ initialCategories }: { initialCategories: any
     const formData = new FormData();
     formData.append("name", newName.trim());
 
-    const res = await saveCategory(formData);
+    const res = await saveCategory(formData) as any;
     if (res.success) {
       toast.success(`"${newName.trim()}" added`);
       setCats([...cats, { id: res.id || Date.now().toString(), name: newName.trim(), count: 0 }]);

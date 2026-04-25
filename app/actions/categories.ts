@@ -30,15 +30,15 @@ export async function saveCategory(formData: FormData) {
 
   let res;
   if (id) {
-    res = await supabase.from("categories").update(categoryData).eq("id", id).eq("store_id", store.id);
+    res = await supabase.from("categories").update(categoryData).eq("id", id).eq("store_id", store.id).select().single();
   } else {
-    res = await supabase.from("categories").insert(categoryData);
+    res = await supabase.from("categories").insert(categoryData).select().single();
   }
 
   if (res.error) return { success: false, error: res.error.message };
 
   revalidatePath("/seller/categories");
-  return { success: true };
+  return { success: true, id: res.data.id };
 }
 
 export async function deleteCategory(id: string) {
