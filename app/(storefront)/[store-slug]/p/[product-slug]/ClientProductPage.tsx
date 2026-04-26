@@ -197,27 +197,27 @@ export function ClientProductPage({
                 </div>
               ))}
             </div>
-            <div className="flex flex-col sm:flex-row items-center gap-3 mt-7">
-              <div className="inline-flex items-center bg-muted rounded-full p-1.5 sm:p-1 self-start sm:self-auto w-full sm:w-auto justify-between sm:justify-start">
+            <div className="flex items-center gap-3 mt-7 w-full">
+              <div className="inline-flex items-center bg-muted rounded-full p-1 h-12 sm:h-12 w-auto justify-between shrink-0 border border-border/50">
                 <button
                   onClick={() => setQty(Math.max(1, qty - 1))}
-                  className="h-11 w-11 sm:h-9 sm:w-9 rounded-full bg-background flex items-center justify-center hover:bg-background/80 transition-colors"
+                  className="h-10 w-10 rounded-full bg-background flex items-center justify-center shadow-sm hover:bg-muted/80 transition-colors"
                 >
-                  <Minus className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
+                  <Minus className="h-4 w-4 text-foreground/70" />
                 </button>
-                <span className="px-4 text-base sm:text-sm font-medium w-14 sm:w-12 text-center">
+                <span className="px-1 text-sm font-medium w-8 text-center">
                   {qty}
                 </span>
                 <button
                   onClick={() => setQty(qty + 1)}
-                  className="h-11 w-11 sm:h-9 sm:w-9 rounded-full bg-background flex items-center justify-center hover:bg-background/80 transition-colors"
+                  className="h-10 w-10 rounded-full bg-background flex items-center justify-center shadow-sm hover:bg-muted/80 transition-colors"
                 >
-                  <Plus className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
+                  <Plus className="h-4 w-4 text-foreground/70" />
                 </button>
               </div>
               <Button
                 size="lg"
-                className="flex-1 w-full h-16 sm:h-16 text-sm sm:text-sm font-semibold sm:font-medium"
+                className="flex-1 w-full h-12 rounded-full text-base font-semibold"
                 onClick={handleAddToCart}
                 disabled={adding}
               >
