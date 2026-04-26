@@ -49,8 +49,8 @@ export default function SellerOnboardingPage() {
       let logoUrl = "";
       if (logoFile) {
         // We simulate having a store ID by using user.id for onboarding asset path temp
-        const result = await uploadStoreAsset(user.id, logoFile, "logo");
-        if (result.success) logoUrl = result.url || "";
+        const publicUrl = await uploadStoreAsset(logoFile, user.id, "logo");
+        logoUrl = publicUrl;
       }
 
       const formData = new FormData();
