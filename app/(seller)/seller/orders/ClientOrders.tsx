@@ -21,8 +21,9 @@ export function ClientOrders({ orders }: { orders: any[] }) {
 
   const renderTable = (list: any[]) => (
     <div className="rounded-[20px] border border-border/60 overflow-hidden bg-background mt-5">
-      <table className="w-full text-sm">
-        <thead>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm min-w-[600px]">
+          <thead>
           <tr className="border-b border-border/60 text-left text-muted-foreground text-xs">
             <th className="px-5 py-3 font-medium">Order</th>
             <th className="px-5 py-3 font-medium">Customer</th>
@@ -53,6 +54,7 @@ export function ClientOrders({ orders }: { orders: any[] }) {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 

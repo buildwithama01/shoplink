@@ -226,9 +226,10 @@ export function ClientProducts({ initialProducts, categories }: { initialProduct
           </div>
         )}
 
-        <div className="rounded-[20px] border border-border/60 bg-background">
-          <table className="w-full text-sm">
-            <thead>
+        <div className="rounded-[20px] border border-border/60 overflow-hidden bg-background">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm min-w-[700px]">
+              <thead>
               <tr className="border-b border-border/60 text-left text-muted-foreground text-xs">
                 <th className="pl-5 pr-2 py-3 w-10">
                   <Checkbox 
@@ -303,6 +304,7 @@ export function ClientProducts({ initialProducts, categories }: { initialProduct
               )}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     </SellerLayout>

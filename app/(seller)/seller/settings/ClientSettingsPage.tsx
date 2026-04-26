@@ -151,34 +151,36 @@ export function ClientSettingsPage({ store, ordersThisMonth, plans }: { store: a
   const handleSave = async () => {
     setSaving(true);
     const fd = new FormData();
-    fd.append("tab", activeTab);
+    fd.append("tab", "all"); // Tell server to save everything
 
-    if (activeTab === "general") {
-      fd.append("name", name);
-      fd.append("tagline", tagline);
-      fd.append("description", description);
-      fd.append("whatsapp_number", whatsapp);
-      fd.append("currency", "NGN");
-    } else if (activeTab === "appearance") {
-      fd.append("primary_color", color);
-      if (logoUrl) fd.append("logo_url", logoUrl);
-    } else if (activeTab === "shipping") {
-      fd.append("shipping_config", JSON.stringify({
-        pickup: { enabled: pickupEnabled },
-        delivery: { enabled: deliveryEnabled, zones },
-      }));
-    } else if (activeTab === "payments") {
-      fd.append("accepts_cod", String(acceptsCod));
-      fd.append("accepts_bank_transfer", String(acceptsTransfer));
-      fd.append("bank_name", bankName);
-      fd.append("account_name", accountName);
-      fd.append("account_number", accountNumber);
-    } else if (activeTab === "seo") {
-      fd.append("seo_meta_title", seoTitle);
-      fd.append("seo_meta_description", seoDesc);
-    } else if (activeTab === "status") {
-      fd.append("is_active", String(isActive));
-    }
+    // General
+    fd.append("name", name);
+    fd.append("tagline", tagline);
+    fd.append("description", description);
+    fd.append("whatsapp_number", whatsapp);
+    fd.append("currency", "NGN");
+    fd.append("is_active", String(isActive));
+
+    // Appearance
+    fd.append("primary_color", color);
+    if (logoUrl) fd.append("logo_url", logoUrl);
+
+    // Shipping
+    fd.append("shipping_config", JSON.stringify({
+      pickup: { enabled: pickupEnabled },
+      delivery: { enabled: deliveryEnabled, zones },
+    }));
+
+    // Payments
+    fd.append("accepts_cod", String(acceptsCod));
+    fd.append("accepts_bank_transfer", String(acceptsTransfer));
+    fd.append("bank_name", bankName);
+    fd.append("account_name", accountName);
+    fd.append("account_number", accountNumber);
+
+    // SEO
+    fd.append("seo_meta_title", seoTitle);
+    fd.append("seo_meta_description", seoDesc);
 
     const res = await saveSettings(fd);
     if (res.success) { toast.success("Settings saved!"); router.refresh(); }

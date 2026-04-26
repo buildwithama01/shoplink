@@ -126,7 +126,7 @@ export function ClientProductPage({ store, product, similarProducts }: { store: 
                 <span className="px-4 text-base sm:text-sm font-medium w-14 sm:w-12 text-center">{qty}</span>
                 <button onClick={() => setQty(qty + 1)} className="h-11 w-11 sm:h-9 sm:w-9 rounded-full bg-background flex items-center justify-center hover:bg-background/80 transition-colors"><Plus className="h-4 w-4 sm:h-3.5 sm:w-3.5" /></button>
               </div>
-              <Button size="lg" className="flex-1 w-full h-14 sm:h-12 text-base sm:text-sm" onClick={handleAddToCart} disabled={adding}>
+              <Button size="lg" className="flex-1 w-full h-16 sm:h-12 text-lg sm:text-sm font-semibold sm:font-medium" onClick={handleAddToCart} disabled={adding}>
                 {adding ? "Adding..." : "Add to cart"}
               </Button>
             </div>
