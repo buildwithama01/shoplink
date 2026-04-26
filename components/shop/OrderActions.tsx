@@ -47,7 +47,7 @@ export function OrderActions({ orderId, currentStatus }: { orderId: string, curr
           {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <XCircle className="h-4 w-4" />} Cancel order
         </Button>
       )}
-      {(currentStatus === 'shipped' || currentStatus === 'delivered') && currentStatus !== 'returned' && (
+      {(currentStatus === 'shipped' || currentStatus === 'delivered') && (
         <Button variant="outline" className="w-full gap-2 border-destructive/30 text-destructive hover:bg-destructive/10 hover:text-destructive" onClick={() => handleUpdateStatus('returned')} disabled={isLoading}>
           {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RotateCcw className="h-4 w-4" />} Mark as returned
         </Button>
