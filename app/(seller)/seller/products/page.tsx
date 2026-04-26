@@ -25,7 +25,8 @@ export default async function SellerProductsPage() {
     .from("products")
     .select("*")
     .eq("store_id", store.id)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .limit(100);
 
   // Fetch categories
   const { data: categories } = await supabase

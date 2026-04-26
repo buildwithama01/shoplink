@@ -34,3 +34,8 @@ VALUES
 ('Hustle', 'For fast-growing businesses', 6000, 500, -1, ARRAY['Everything in Starter', 'Unlimited products', 'Priority WhatsApp support', 'Advanced analytics', 'Custom store colors & logo'], false, 'bg-blue-500/10 dark:bg-blue-500/20'),
 ('Boss', 'For high-volume sellers', 15000, -1, -1, ARRAY['Everything in Hustle', 'Multiple stores', 'Dedicated account manager', 'Early access to new features', 'Custom domain support'], false, 'bg-purple-500/10 dark:bg-purple-500/20')
 ON CONFLICT DO NOTHING;
+
+-- IMPROVE LOOKUP PERFORMANCE WITH STORE-BASED INDICES ----
+CREATE INDEX idx_stores_slug ON stores(slug);
+CREATE INDEX idx_products_store_id ON products(store_id);
+CREATE INDEX idx_orders_store_id ON orders(store_id);

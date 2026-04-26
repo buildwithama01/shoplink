@@ -1,11 +1,11 @@
-import { createClient } from "@/lib/supabase/server";
+import { createAnonClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { ClientProductPage } from "./ClientProductPage";
 
 export async function generateMetadata({ params }: { params: Promise<{ "product-slug": string }> }): Promise<Metadata> {
   const { "product-slug": productSlug } = await params;
-  const supabase = await createClient();
+  const supabase = createAnonClient();
   const { data: product } = await supabase.from("products").select("name, description").eq("slug", productSlug).single();
   
   if (!product) return {};
@@ -16,13 +16,15 @@ export async function generateMetadata({ params }: { params: Promise<{ "product-
   };
 }
 
+export const revalidate = 3600;
+
 export default async function ProductDetailPage({
   params,
 }: {
   params: Promise<{ "store-slug": string; "product-slug": string }>;
 }) {
   const { "store-slug": storeSlug, "product-slug": productSlug } = await params;
-  const supabase = await createClient();
+  const supabase = createAnonClient();
 
   // Fetch store
   const { data: store } = await supabase

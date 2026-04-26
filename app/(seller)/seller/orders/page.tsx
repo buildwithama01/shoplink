@@ -33,7 +33,8 @@ export default async function SellerOrdersPage() {
       order_items (id)
     `)
     .eq("store_id", store.id)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .limit(100);
 
   return (
     <ClientOrders orders={orders || []} />

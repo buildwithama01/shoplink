@@ -1,5 +1,6 @@
 import { Image as ImageIcon, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 const formatNGN = (amount: number) => {
@@ -23,9 +24,9 @@ export function ProductCard({ product, compact = false, index = 0, storeSlug }: 
     >
       <div className={cn("relative aspect-[4/5] flex items-center justify-center overflow-hidden", tile)}>
         {product.images?.[0] ? (
-          <img src={product.images[0]} alt={product.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <Image src={product.images[0]} alt={product.name} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
         ) : product.image && product.image !== "/placeholder.png" ? (
-          <img src={product.image} alt={product.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <Image src={product.image} alt={product.name} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
         ) : (
           <ImageIcon className="h-12 w-12 text-foreground/20 transition-transform duration-500 group-hover:scale-105" />
         )}

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Image as ImageIcon,
   Minus,
@@ -91,10 +92,13 @@ export function ClientProductPage({
           <div className="space-y-3">
             <div className="relative aspect-square rounded-[28px] bg-tile-mint flex items-center justify-center overflow-hidden">
               {images[activeImageIndex] ? (
-                <img
+                <Image
                   src={images[activeImageIndex]}
                   alt={product.name}
-                  className="h-full w-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
+                  priority
                 />
               ) : (
                 <ImageIcon className="h-24 w-24 text-foreground/15" />
@@ -112,16 +116,18 @@ export function ClientProductPage({
                     key={i}
                     onClick={() => setActiveImageIndex(i)}
                     className={cn(
-                      "aspect-square rounded-2xl flex items-center justify-center cursor-pointer border transition-colors overflow-hidden",
+                      "relative aspect-square rounded-2xl flex items-center justify-center cursor-pointer border transition-colors overflow-hidden",
                       activeImageIndex === i
                         ? "border-ink border-2"
                         : "border-transparent hover:border-foreground/20 bg-tile-mist",
                     )}
                   >
-                    <img
+                    <Image
                       src={img}
                       alt=""
-                      className="h-full w-full object-cover"
+                      fill
+                      sizes="(max-width: 768px) 25vw, 15vw"
+                      className="object-cover"
                     />
                   </div>
                 ))}

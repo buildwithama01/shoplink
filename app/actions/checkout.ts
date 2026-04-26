@@ -55,7 +55,7 @@ export async function placeOrder(formData: FormData) {
     // We use the admin client since the guest user does not have permission to upload
     const { error: uploadError } = await supabaseAdmin.storage
       .from("store-assets")
-      .upload(filePath, receiptFile);
+      .upload(filePath, receiptFile, { cacheControl: '3600', upsert: false });
 
     if (uploadError) {
       console.error("Receipt upload error:", uploadError);

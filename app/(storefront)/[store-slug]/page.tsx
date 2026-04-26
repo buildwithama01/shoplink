@@ -1,10 +1,12 @@
-import { createClient } from "@/lib/supabase/server";
+import { createAnonClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { StorefrontClient } from "./ClientPage";
 
+export const revalidate = 3600;
+
 export default async function StorefrontPage({ params }: { params: Promise<{ "store-slug": string }> }) {
   const { "store-slug": slug } = await params;
-  const supabase = await createClient();
+  const supabase = createAnonClient();
 
   // Fetch store
   const { data: store } = await supabase

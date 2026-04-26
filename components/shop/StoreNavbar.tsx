@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Search, ShoppingBag } from "lucide-react";
 import { CartDrawer } from "./CartDrawer";
 import { useCart } from "@/hooks/useCart";
@@ -21,7 +22,9 @@ export function StoreNavbar({ store }: { store: any }) {
       <div className="container flex h-16 items-center justify-between gap-6">
         <Link href={`/${store.slug}`} className="flex items-center gap-2.5">
           {store.logo_url ? (
-            <img src={store.logo_url} alt={store.name} className="h-8 w-8 rounded-xl object-cover" />
+            <div className="relative h-8 w-8 rounded-xl overflow-hidden shrink-0">
+              <Image src={store.logo_url} alt={store.name} fill sizes="32px" className="object-cover" />
+            </div>
           ) : (
             <div className="h-8 w-8 rounded-xl bg-ink text-ink-foreground flex items-center justify-center text-sm font-semibold">
               {store.name.charAt(0)}

@@ -2,6 +2,7 @@
 
 import { Image as ImageIcon, Upload, X, Loader2 } from "lucide-react";
 import { useState } from "react";
+import Image from "next/image";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import { v4 as uuidv4 } from "uuid";
@@ -69,7 +70,7 @@ export function ImageUploader({
 
         const { error: uploadError } = await supabase.storage
           .from(bucket)
-          .upload(filePath, file);
+          .upload(filePath, file, { cacheControl: '3600', upsert: false });
 
         if (uploadError) throw uploadError;
 
@@ -128,7 +129,7 @@ export function ImageUploader({
         <div className="grid grid-cols-3 gap-3">
           {urls.map((url, i) => (
             <div key={i} className="relative aspect-square rounded-2xl flex items-center justify-center group border border-border/50 bg-muted/20 overflow-hidden">
-              <img src={url} alt="" className="w-full h-full object-cover" />
+              <Image src={url} alt="" fill sizes="(max-width: 768px) 33vw, 15vw" className="object-cover" />
               <button 
                 onClick={(e) => { e.preventDefault(); removeImage(i); }} 
                 className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-ink text-ink-foreground flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10"
