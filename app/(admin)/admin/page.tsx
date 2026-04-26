@@ -2,13 +2,8 @@ import { Activity, Store, Users, DollarSign } from "lucide-react";
 import { AdminLayout, AdminTopBar } from "@/components/admin/AdminSidebar";
 import { StatCard } from "@/components/shop/StatCard";
 import { createClient } from "@/lib/supabase/server";
-import dynamic from "next/dynamic";
+import { LazyAdminCharts } from "@/components/admin/LazyAdminCharts";
 import { checkAdminAuth } from "@/lib/admin";
-
-const AdminCharts = dynamic(() => import("@/components/admin/AdminCharts").then(mod => mod.AdminCharts), {
-  ssr: false,
-  loading: () => <div className="h-[400px] w-full rounded-3xl border border-border/60 bg-muted/20 animate-pulse flex items-center justify-center text-muted-foreground">Loading charts...</div>
-});
 import { redirect } from "next/navigation";
 
 export default async function AdminDashboardPage() {
@@ -44,7 +39,7 @@ export default async function AdminDashboardPage() {
           <StatCard label="System Status" value="Healthy" icon={Activity} accent="muted" />
         </div>
         
-        <AdminCharts orders={orders || []} />
+        <LazyAdminCharts orders={orders || []} />
       </div>
     </AdminLayout>
   );
