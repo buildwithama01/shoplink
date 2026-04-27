@@ -26,7 +26,7 @@ export default async function SellerOrderDetailPage({ params }: { params: Promis
   const { id } = await params;
   const supabase = await createClient();
 
-  // Fetch real order and items
+  // Fetch real order and items (including stored image snapshots on order_items)
   const { data: order, error } = await supabase
     .from("orders")
     .select(`
@@ -44,13 +44,16 @@ export default async function SellerOrderDetailPage({ params }: { params: Promis
   const itemsTotal = order.subtotal_amount || 0;
   const shipping = parseFloat(order.shipping_fee) || 0;
   
-  // Fetch product images for order items
-  const productIds = order.order_items.map((item: any) => item.product_id).filter(Boolean);
+  // Fetch product images for order items as a fallback (for older orders without stored image)
+  const productIds = order.order_items
+    .filter((item: any) => !item.image) // only fetch if image not already stored on order item
+    .map((item: any) => item.product_id)
+    .filter(Boolean);
   let productImages: Record<string, string> = {};
   if (productIds.length > 0) {
     const { data: products } = await supabase
       .from("products")
-      .select("id, images, image")
+      .select("id, images")
       .in("id", productIds);
     if (products) {
       products.forEach((p: any) => {
@@ -60,8 +63,6 @@ export default async function SellerOrderDetailPage({ params }: { params: Promis
         }
         if (Array.isArray(imgs) && imgs[0]) {
           productImages[p.id] = imgs[0];
-        } else if (p.image) {
-          productImages[p.id] = p.image;
         }
       });
     }
@@ -81,7 +82,7 @@ export default async function SellerOrderDetailPage({ params }: { params: Promis
     state: "complete",
   });
 
-  if (order.status !== 'pending' && order.status !== 'cancelled') {
+  if (order.status !== "pending" && order.status !== "cancelled") {
     timelineSteps.push({
       label: "Order processing",
       timestamp: new Date(order.updated_at || order.created_at).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }),
@@ -89,7 +90,7 @@ export default async function SellerOrderDetailPage({ params }: { params: Promis
     });
   }
 
-  if (order.status === 'shipped' || order.status === 'delivered') {
+  if (order.status === "shipped" || order.status === "delivered" || order.status === "returned") {
     timelineSteps.push({
       label: "Order shipped",
       timestamp: new Date(order.updated_at).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }),
@@ -97,7 +98,7 @@ export default async function SellerOrderDetailPage({ params }: { params: Promis
     });
   }
 
-  if (order.status === 'delivered') {
+  if (order.status === "delivered" || order.status === "returned") {
     timelineSteps.push({
       label: "Order delivered",
       timestamp: new Date(order.updated_at).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }),
@@ -105,7 +106,15 @@ export default async function SellerOrderDetailPage({ params }: { params: Promis
     });
   }
 
-  if (order.status === 'cancelled') {
+  if (order.status === "returned") {
+    timelineSteps.push({
+      label: "Order returned",
+      timestamp: new Date(order.updated_at).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }),
+      state: "complete",
+    });
+  }
+
+  if (order.status === "cancelled") {
     timelineSteps.push({
       label: "Order cancelled",
       timestamp: new Date(order.updated_at).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }),
@@ -154,8 +163,12 @@ export default async function SellerOrderDetailPage({ params }: { params: Promis
                 {order.order_items.map((it: any) => (
                   <div key={it.id} className="flex items-center gap-3 py-3 border-b border-border/60 last:border-0">
                     <div className="h-12 w-12 rounded-xl bg-tile-mint flex items-center justify-center overflow-hidden shrink-0">
-                      {productImages[it.product_id] ? (
-                        <img src={productImages[it.product_id]} alt="" className="h-full w-full object-cover" />
+                      {(it.image || productImages[it.product_id]) ? (
+                        <img
+                          src={it.image || productImages[it.product_id]}
+                          alt={it.product_name}
+                          className="h-full w-full object-cover"
+                        />
                       ) : (
                         <ImageIcon className="h-5 w-5 text-foreground/30" />
                       )}

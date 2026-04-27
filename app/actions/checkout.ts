@@ -45,6 +45,24 @@ export async function placeOrder(formData: FormData) {
       }
     }
   }
+
+  // --- Idempotency guard: prevent duplicate orders within a 60-second window ---
+  const sixtySecondsAgo = new Date(Date.now() - 60_000).toISOString();
+  const { data: recentOrder } = await supabase
+    .from("orders")
+    .select("id")
+    .eq("store_id", storeId)
+    .eq("customer_email", customerEmail)
+    .eq("total_amount", totalAmount)
+    .gte("created_at", sixtySecondsAgo)
+    .limit(1)
+    .maybeSingle();
+
+  if (recentOrder) {
+    // Return the existing order id so the client can still redirect correctly
+    return { success: true, orderId: recentOrder.id, trackingToken: null, whatsappUrl: null, duplicate: true };
+  }
+  // --- End idempotency guard ---
   
   let paymentReceiptUrl = null;
   if (receiptFile) {
@@ -98,10 +116,32 @@ export async function placeOrder(formData: FormData) {
     quantity: item.quantity,
     unit_price: item.price,
     total_price: item.price * item.quantity,
+    image: item.image || null,
   }));
 
   const { error: itemsError } = await supabase.from("order_items").insert(orderItems);
   if (itemsError) return { success: false, error: itemsError.message };
+
+  // --- Deduct stock quantity for each ordered product ---
+  for (const item of items) {
+    if (!item.productId) continue;
+
+    // Fetch current stock
+    const { data: product } = await supabase
+      .from("products")
+      .select("stock_quantity")
+      .eq("id", item.productId)
+      .single();
+
+    if (product && product.stock_quantity !== null) {
+      const newQty = Math.max(0, product.stock_quantity - item.quantity);
+      await supabase
+        .from("products")
+        .update({ stock_quantity: newQty })
+        .eq("id", item.productId);
+    }
+  }
+  // --- End stock deduction ---
   
   const token = Math.random().toString(36).substring(2, 12); // nanoid(10) equivalent
 
