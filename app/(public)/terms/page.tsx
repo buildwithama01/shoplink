@@ -44,7 +44,7 @@ export default function TermsPage() {
             <div className="h-9 w-9 rounded-xl bg-ink text-ink-foreground flex items-center justify-center text-sm font-bold shadow-sm">
               S
             </div>
-            <span className="font-bold text-xl tracking-tight text-foreground hidden sm:block">ShopLink</span>
+            <span className="font-bold text-xl tracking-tight text-foreground hidden sm:block">Kozura</span>
           </Link>
           
           <div className="flex items-center gap-6">
@@ -102,17 +102,17 @@ export default function TermsPage() {
           <section id="terms" className="scroll-mt-32">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">Terms & conditions</h2>
             <p className="text-muted-foreground leading-relaxed mb-8 text-lg">
-              Welcome to ShopLink. By accessing or using our platform, you agree to be bound by these terms. We provide a digital storefront solution that allows sellers to easily display products and receive orders via WhatsApp.
+              Welcome to Kozura. By accessing or using our platform, you agree to be bound by these terms. We provide a digital storefront solution that allows sellers to easily display products and receive orders via WhatsApp.
             </p>
 
             <h3 className="text-xl font-bold mb-4 text-foreground mt-8">Use of our platform</h3>
             <p className="text-muted-foreground leading-relaxed mb-8">
-              ShopLink grants you a limited, non-exclusive, non-transferable, and revocable license to use our services for your business. You agree not to reproduce, duplicate, copy, sell, resell, or exploit any portion of the service without express written permission from us.
+              Kozura grants you a limited, non-exclusive, non-transferable, and revocable license to use our services for your business. You agree not to reproduce, duplicate, copy, sell, resell, or exploit any portion of the service without express written permission from us.
             </p>
 
             <h3 className="text-xl font-bold mb-4 text-foreground mt-8">Account responsibilities</h3>
             <p className="text-muted-foreground leading-relaxed mb-12">
-              You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. ShopLink cannot and will not be liable for any loss or damage from your failure to comply with this security obligation.
+              You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. Kozura cannot and will not be liable for any loss or damage from your failure to comply with this security obligation.
             </p>
           </section>
 
@@ -122,7 +122,7 @@ export default function TermsPage() {
           <section id="prohibited" className="mb-12">
             <h3 className="text-xl font-bold mb-4 text-foreground">Prohibited Activities</h3>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              When using ShopLink, you agree not to engage in any of the following activities:
+              When using Kozura, you agree not to engage in any of the following activities:
             </p>
             <ul className="list-disc pl-6 space-y-3 text-muted-foreground marker:text-primary/70">
               <li>Misuse of the platform or distributing malicious code.</li>
@@ -138,7 +138,7 @@ export default function TermsPage() {
           <section id="privacy" className="scroll-mt-32">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">Privacy policy</h2>
             <p className="text-muted-foreground leading-relaxed mb-8 text-lg">
-              Your privacy is extremely important to us. This section explains how we collect, use, and protect your personal data when you interact with the ShopLink platform.
+              Your privacy is extremely important to us. This section explains how we collect, use, and protect your personal data when you interact with the Kozura platform.
             </p>
 
             <h3 className="text-xl font-bold mb-4 text-foreground mt-8">Data collection & usage</h3>
@@ -163,7 +163,7 @@ export default function TermsPage() {
           <section id="policy" className="scroll-mt-32">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">User policy</h2>
             <p className="text-muted-foreground leading-relaxed mb-8 text-lg">
-              This policy outlines the expected behavior for all users on the ShopLink platform to ensure a safe and trustworthy environment for both sellers and buyers.
+              This policy outlines the expected behavior for all users on the Kozura platform to ensure a safe and trustworthy environment for both sellers and buyers.
             </p>
 
             <h3 className="text-xl font-bold mb-4 text-foreground mt-8">User conduct</h3>
@@ -173,7 +173,7 @@ export default function TermsPage() {
 
             <h3 className="text-xl font-bold mb-4 text-foreground mt-8">Account suspension</h3>
             <p className="text-muted-foreground leading-relaxed">
-              ShopLink reserves the right to suspend or terminate accounts that violate our terms, engage in fraudulent behavior, or receive consistent negative reports from buyers. In the event of a suspension, the seller will be notified via email with details regarding the violation.
+              Kozura reserves the right to suspend or terminate accounts that violate our terms, engage in fraudulent behavior, or receive consistent negative reports from buyers. In the event of a suspension, the seller will be notified via email with details regarding the violation.
             </p>
           </section>
 
@@ -190,7 +190,7 @@ export default function TermsPage() {
               <div className="h-10 w-10 rounded-xl bg-primary text-primary-foreground flex items-center justify-center text-lg font-bold shadow-sm">
                 S
               </div>
-              <span className="font-semibold text-2xl tracking-tight text-white">ShopLink</span>
+              <span className="font-semibold text-2xl tracking-tight text-white">Kozura</span>
             </div>
             
             <div className="flex items-center gap-6 text-white/60">
@@ -258,7 +258,7 @@ export default function TermsPage() {
 
           {/* 3. Bottom Bar */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-white/50">
-            <p>Copyright © {new Date().getFullYear()} ShopLink | Designed for Nigerian Sellers</p>
+            <p>Copyright © {new Date().getFullYear()} Kozura | Designed for Nigerian Sellers</p>
             <div className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-lg border border-white/10 hover:bg-white/10 transition-colors cursor-pointer">
               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
               <span className="font-medium text-white/80">All systems operational</span>

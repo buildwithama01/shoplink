@@ -18,7 +18,7 @@ const formatNGN = (amount: number) => {
 
 export function ClientDashboard({ store, stats, recentOrders }: { store: any, stats: any, recentOrders: any[] }) {
   const router = useRouter();
-  const [storeUrl, setStoreUrl] = useState(`shoplink.app/${store.slug}`);
+  const [storeUrl, setStoreUrl] = useState(`kozura.app/${store.slug}`);
   const [showShare, setShowShare] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
 
@@ -37,7 +37,7 @@ export function ClientDashboard({ store, stats, recentOrders }: { store: any, st
 
   const shareLinks = [
     { label: "WhatsApp", color: "bg-green-500 hover:bg-green-600", icon: "💬", url: `https://wa.me/?text=${encodeURIComponent(`Check out my store: https://${storeUrl}`)}` },
-    { label: "X (Twitter)", color: "bg-ink hover:bg-ink/90", icon: "𝕏", url: `https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out my store on ShopLink!`)}&url=${encodeURIComponent(`https://${storeUrl}`)}` },
+    { label: "X (Twitter)", color: "bg-ink hover:bg-ink/90", icon: "𝕏", url: `https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out my store on Kozura!`)}&url=${encodeURIComponent(`https://${storeUrl}`)}` },
     { label: "Facebook", color: "bg-blue-600 hover:bg-blue-700", icon: "f", url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://${storeUrl}`)}` },
   ];
 

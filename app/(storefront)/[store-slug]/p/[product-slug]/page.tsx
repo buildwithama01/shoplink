@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: { params: Promise<{ "product-
   
   return {
     title: product.name,
-    description: product.description?.substring(0, 160) || `Buy ${product.name} on ShopLink`,
+    description: product.description?.substring(0, 160) || `Buy ${product.name} on Kozura`,
   };
 }
 

@@ -49,7 +49,7 @@ export function AdminSidebar() {
           )}
           <div className="min-w-0 flex-1">
             <div className="font-semibold text-sm tracking-tight leading-none truncate">
-              {adminUser?.user_metadata?.full_name || "ShopLink Core"}
+              {adminUser?.user_metadata?.full_name || "Kozura Core"}
             </div>
             <div className="text-[11px] text-ink-foreground/60 mt-0.5 truncate">
               {adminUser?.email || "Super Admin"}

@@ -7,7 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "ShopLink — Sell anywhere, scale everywhere",
+  title: "Kozura — Sell anywhere, scale everywhere",
   description: "Create your beautifully fast online store in minutes. Share your unique link with customers across WhatsApp, Instagram, and Twitter to start making sales instantly.",
 };
 

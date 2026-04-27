@@ -2,7 +2,7 @@
 
 export async function verifyAdminEmail(email: string) {
   // Read from environment variables. Fallback added for testing if not set.
-  const adminEmail = process.env.ADMIN_EMAIL || "admin@shoplink.app";
+  const adminEmail = process.env.ADMIN_EMAIL || "admin@kozura.app";
   
   // We use a slight delay to prevent timing attacks and brute forcing
   await new Promise(resolve => setTimeout(resolve, 500));

@@ -78,7 +78,7 @@ export default function SellerOnboardingPage() {
         <div className="flex-1 rounded-[28px] bg-ink text-ink-foreground p-12 flex flex-col justify-between">
           <div className="flex items-center gap-2.5">
             <div className="h-8 w-8 rounded-xl bg-background text-foreground flex items-center justify-center text-sm font-bold">S</div>
-            <span className="font-semibold tracking-tight">ShopLink</span>
+            <span className="font-semibold tracking-tight">Kozura</span>
           </div>
           <div>
             <div className="text-xs uppercase tracking-[0.18em] font-medium text-ink-foreground/60">Step {step + 1} of {steps.length}</div>
@@ -102,7 +102,7 @@ export default function SellerOnboardingPage() {
         <div className="w-full max-w-md">
           <div className="lg:hidden flex items-center gap-2.5 mb-8">
             <div className="h-8 w-8 rounded-xl bg-ink text-ink-foreground flex items-center justify-center text-sm font-bold">S</div>
-            <span className="font-semibold tracking-tight">ShopLink</span>
+            <span className="font-semibold tracking-tight">Kozura</span>
           </div>
 
           <div className="flex items-center gap-2 mb-6 lg:hidden">
@@ -120,7 +120,7 @@ export default function SellerOnboardingPage() {
               <div>
                 <Label className="text-xs text-muted-foreground">Store name</Label>
                 <Input className="mt-1.5 rounded-xl" placeholder="e.g. Cruz Gadgets" value={storeName} onChange={(e) => setStoreName(e.target.value)} />
-                {slug && <div className="text-xs text-muted-foreground mt-1.5">shoplink.app/<span className="font-medium text-foreground">{slug}</span></div>}
+                {slug && <div className="text-xs text-muted-foreground mt-1.5">kozura.app/<span className="font-medium text-foreground">{slug}</span></div>}
               </div>
               <div>
                 <Label className="text-xs text-muted-foreground">Category</Label>

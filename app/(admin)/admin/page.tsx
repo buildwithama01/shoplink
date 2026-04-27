@@ -29,7 +29,7 @@ export default async function AdminDashboardPage() {
 
   return (
     <AdminLayout>
-      <AdminTopBar title="Platform Overview" subtitle="Global metrics for ShopLink" />
+      <AdminTopBar title="Platform Overview" subtitle="Global metrics for Kozura" />
       <div className="p-7 space-y-6">
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
           <StatCard label="Total GMV" value={formattedGMV} icon={DollarSign} accent="primary" />

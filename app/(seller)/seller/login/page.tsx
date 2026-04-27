@@ -28,7 +28,7 @@ export default function SellerLoginPage() {
         <div className="flex-1 rounded-[28px] bg-ink text-ink-foreground p-12 flex flex-col justify-between">
           <div className="flex items-center gap-2.5">
             <div className="h-8 w-8 rounded-xl bg-background text-foreground flex items-center justify-center text-sm font-bold">S</div>
-            <span className="font-semibold tracking-tight">ShopLink</span>
+            <span className="font-semibold tracking-tight">Kozura</span>
           </div>
           <div>
             <div className="text-xs uppercase tracking-[0.18em] font-medium text-ink-foreground/60">Open your store</div>
@@ -48,7 +48,7 @@ export default function SellerLoginPage() {
         <div className="w-full max-w-sm">
           <div className="lg:hidden flex items-center gap-2.5 mb-8">
             <div className="h-8 w-8 rounded-xl bg-ink text-ink-foreground flex items-center justify-center text-sm font-bold">S</div>
-            <span className="font-semibold tracking-tight">ShopLink</span>
+            <span className="font-semibold tracking-tight">Kozura</span>
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">Welcome</h1>
           <p className="text-sm text-muted-foreground mt-1.5">Sign in to manage your store</p>

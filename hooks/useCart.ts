@@ -48,7 +48,7 @@ export const useCart = create<CartStore>()(
         })),
     }),
     {
-      name: 'shoplink-cart',
+      name: 'kozura-cart',
     }
   )
 );

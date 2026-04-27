@@ -269,7 +269,7 @@ export function ClientSettingsPage({ store, ordersThisMonth, plans }: { store: a
                       </div>
                     </div>
                     <div className={cn("text-xs mt-1.5", slugStatus === "taken" ? "text-destructive" : slugStatus === "available" ? "text-success" : "text-muted-foreground")}>
-                      {slugStatus === "taken" ? "This URL is already taken." : slugStatus === "available" ? "This URL is available!" : `shoplink.app/${slug}`}
+                      {slugStatus === "taken" ? "This URL is already taken." : slugStatus === "available" ? "This URL is available!" : `kozura.app/${slug}`}
                     </div>
                   </div>
                   <Button onClick={handleSaveSlug} disabled={savingSlug || slugStatus === "taken" || slugStatus === "checking" || slug === store.slug} className="rounded-xl gap-2 mb-6">

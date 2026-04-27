@@ -96,7 +96,7 @@ const faqGroupsData = [
         a: "Yes, we offer custom enterprise plans that include custom domain setup, API integrations, and dedicated account management.",
       },
       {
-        q: "Can I migrate my existing store to ShopLink?",
+        q: "Can I migrate my existing store to Kozura?",
         a: "Absolutely. Our support team can help you migrate your product catalog from other platforms seamlessly.",
       },
     ],
@@ -183,7 +183,7 @@ export default function LandingPage() {
     },
     {
       quote:
-        "ShopLink transformed how I handle orders. I used to rely entirely on Instagram DMs, but now my customers just check out via my link.",
+        "Kozura transformed how I handle orders. I used to rely entirely on Instagram DMs, but now my customers just check out via my link.",
       initials: "EJ",
       name: "Emeka J.",
       handle: "@cruzgadgets",
@@ -221,7 +221,7 @@ export default function LandingPage() {
                   S
                 </div>
                 <span className="font-bold text-xl tracking-tight text-foreground hidden sm:block">
-                  ShopLink
+                  Kozura
                 </span>
               </div>
 
@@ -278,7 +278,7 @@ export default function LandingPage() {
                   </h1>
 
                   <p className="text-lg md:text-xl text-muted-foreground mb-10 leading-relaxed lg:max-w-[90%]">
-                    Stop sending price lists on WhatsApp. ShopLink gives you a
+                    Stop sending price lists on WhatsApp. Kozura gives you a
                     professional storefront, linked directly to your WhatsApp —
                     set up in minutes, not months.
                   </p>
@@ -537,7 +537,7 @@ export default function LandingPage() {
                   What our customers think
                 </h2>
                 <p className="text-lg text-muted-foreground">
-                  Thousands of Nigerian sellers trust ShopLink to run their
+                  Thousands of Nigerian sellers trust Kozura to run their
                   online stores effortlessly.
                 </p>
               </div>
@@ -608,7 +608,7 @@ export default function LandingPage() {
                     99%
                   </div>
                   <div className="text-xl md:text-2xl font-medium text-primary-foreground/90 leading-tight max-w-sm">
-                    of customers recommended ShopLink to other sellers
+                    of customers recommended Kozura to other sellers
                   </div>
                 </div>
               </div>
@@ -685,7 +685,7 @@ export default function LandingPage() {
                 </h2>
 
                 <p className="text-lg md:text-xl text-ink-foreground/80 mb-10 leading-relaxed max-w-md">
-                  Join hundreds of Nigerian sellers already using ShopLink to
+                  Join hundreds of Nigerian sellers already using Kozura to
                   sell smarter. Setup takes 5 minutes.
                 </p>
 
@@ -722,7 +722,7 @@ export default function LandingPage() {
                 S
               </div>
               <span className="font-semibold text-2xl tracking-tight text-white">
-                ShopLink
+                Kozura
               </span>
             </div>
 
@@ -916,7 +916,7 @@ export default function LandingPage() {
           {/* 3. Bottom Bar */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-white/50">
             <p>
-              Copyright © {new Date().getFullYear()} ShopLink | Designed for
+              Copyright © {new Date().getFullYear()} Kozura | Designed for
               Nigerian Sellers
             </p>
             <div className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-lg border border-white/10 hover:bg-white/10 transition-colors cursor-pointer">

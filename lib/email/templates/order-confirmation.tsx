@@ -106,7 +106,7 @@ export function OrderConfirmationEmail({
       </div>
 
       <div style={{ textAlign: 'center', padding: '24px 0', borderTop: '1px solid #e5e5e5', color: '#737373', fontSize: '12px' }}>
-        Powered by ShopLink
+        Powered by Kozura
       </div>
     </div>
   );

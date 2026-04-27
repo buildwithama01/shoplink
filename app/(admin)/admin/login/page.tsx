@@ -71,11 +71,11 @@ export default function AdminLoginPage() {
         <div className="flex-1 rounded-[28px] bg-ink text-ink-foreground p-12 flex flex-col justify-between">
           <div className="flex items-center gap-2.5">
             <div className="h-8 w-8 rounded-xl bg-background text-foreground flex items-center justify-center text-sm font-bold">SL</div>
-            <span className="font-semibold tracking-tight">ShopLink Core</span>
+            <span className="font-semibold tracking-tight">Kozura Core</span>
           </div>
           <div>
             <div className="text-xs uppercase tracking-[0.18em] font-medium text-ink-foreground/60">Command Center</div>
-            <h2 className="mt-3 text-4xl font-semibold tracking-tight leading-tight max-w-md">Manage the entire ShopLink ecosystem.</h2>
+            <h2 className="mt-3 text-4xl font-semibold tracking-tight leading-tight max-w-md">Manage the entire Kozura ecosystem.</h2>
           </div>
           <div className="flex gap-2"><span className="h-1.5 w-6 rounded-full bg-background" /><span className="h-1.5 w-1.5 rounded-full bg-background/30" /></div>
         </div>
@@ -85,7 +85,7 @@ export default function AdminLoginPage() {
         <div className="w-full max-w-sm">
           <div className="lg:hidden flex items-center gap-2.5 mb-8">
             <div className="h-8 w-8 rounded-xl bg-ink text-ink-foreground flex items-center justify-center text-sm font-bold">SL</div>
-            <span className="font-semibold tracking-tight">ShopLink Core</span>
+            <span className="font-semibold tracking-tight">Kozura Core</span>
           </div>
           
           <Suspense fallback={<div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent mx-auto mt-8" />}>

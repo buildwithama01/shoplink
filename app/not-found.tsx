@@ -15,7 +15,7 @@ export default function NotFound() {
               <div className="h-8 w-8 rounded-xl bg-ink text-ink-foreground flex items-center justify-center text-sm font-bold shadow-sm">
                 S
               </div>
-              <span className="font-semibold text-xl tracking-tight text-foreground">ShopLink</span>
+              <span className="font-semibold text-xl tracking-tight text-foreground">Kozura</span>
             </div>
           </div>
         </header>

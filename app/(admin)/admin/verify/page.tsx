@@ -38,7 +38,7 @@ export default function AdminVerifyPage() {
       <div className="w-full max-w-sm">
         <div className="flex items-center gap-2.5 mb-8 justify-center">
           <div className="h-8 w-8 rounded-xl bg-ink text-ink-foreground flex items-center justify-center text-sm font-bold">SL</div>
-          <span className="font-semibold tracking-tight">ShopLink Core</span>
+          <span className="font-semibold tracking-tight">Kozura Core</span>
         </div>
         
         <div className="bg-background rounded-[24px] border border-border/60 p-8 shadow-sm">

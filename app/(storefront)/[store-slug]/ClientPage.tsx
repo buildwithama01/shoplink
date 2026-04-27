@@ -98,7 +98,7 @@ export function StorefrontClient({ store, products, categories }: { store: any, 
         )}
         <footer className="mt-16 border-t border-border/60 py-8 text-xs text-muted-foreground flex flex-wrap items-center justify-between gap-3">
           <span>© {new Date().getFullYear()} {store.name}. All rights reserved.</span>
-          <span>Powered by ShopLink</span>
+          <span>Powered by Kozura</span>
         </footer>
       </div>
     </div>
