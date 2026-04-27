@@ -116,7 +116,6 @@ export async function placeOrder(formData: FormData) {
     quantity: item.quantity,
     unit_price: item.price,
     total_price: item.price * item.quantity,
-    image: item.image || null,
   }));
 
   const { error: itemsError } = await supabase.from("order_items").insert(orderItems);

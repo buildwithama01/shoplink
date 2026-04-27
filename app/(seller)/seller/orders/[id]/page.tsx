@@ -44,9 +44,8 @@ export default async function SellerOrderDetailPage({ params }: { params: Promis
   const itemsTotal = order.subtotal_amount || 0;
   const shipping = parseFloat(order.shipping_fee) || 0;
   
-  // Fetch product images for order items as a fallback (for older orders without stored image)
+  // Fetch product images for order items from the live products table
   const productIds = order.order_items
-    .filter((item: any) => !item.image) // only fetch if image not already stored on order item
     .map((item: any) => item.product_id)
     .filter(Boolean);
   let productImages: Record<string, string> = {};
