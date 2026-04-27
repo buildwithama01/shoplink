@@ -289,7 +289,9 @@ export function ClientProducts({ initialProducts, categories }: { initialProduct
                       <td className="px-3 py-3 text-muted-foreground capitalize hidden sm:table-cell">{catName}</td>
                       <td className="px-3 py-3 font-medium">{formatNGN(p.price)}</td>
                       <td className="px-3 py-3 hidden md:table-cell">
-                        {p.track_inventory ? p.stock_quantity : "Unlimited"}
+                        {p.stock_quantity !== null && p.stock_quantity !== undefined ? (
+                          p.stock_quantity > 0 ? p.stock_quantity : <span className="text-destructive font-medium text-xs bg-destructive/10 px-2 py-1 rounded-full">Out of stock</span>
+                        ) : "Unlimited"}
                       </td>
                       <td className="px-3 py-3"><StatusBadge status={p.is_published ? "Active" : "Inactive"} /></td>
                       <td className="px-3 py-3">

@@ -30,7 +30,8 @@ export default async function StorefrontPage({ params }: { params: Promise<{ "st
     .from("products")
     .select("*")
     .eq("store_id", store.id)
-    .eq("is_published", true);
+    .eq("is_published", true)
+    .gt("stock_quantity", 0);
 
   return (
     <StorefrontClient 

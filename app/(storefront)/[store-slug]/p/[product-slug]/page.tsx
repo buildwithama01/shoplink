@@ -43,6 +43,8 @@ export default async function ProductDetailPage({
     .select("*")
     .eq("store_id", store.id)
     .eq("slug", productSlug)
+    .eq("is_published", true)
+    .gt("stock_quantity", 0)
     .single();
 
   if (!product) {
@@ -55,6 +57,8 @@ export default async function ProductDetailPage({
     .select("*")
     .eq("store_id", store.id)
     .neq("id", product.id)
+    .eq("is_published", true)
+    .gt("stock_quantity", 0)
     .limit(4);
 
   return (
