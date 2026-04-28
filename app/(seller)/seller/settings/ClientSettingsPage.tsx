@@ -148,6 +148,14 @@ export function ClientSettingsPage({ store, ordersThisMonth, plans }: { store: a
   const [seoTitle, setSeoTitle] = useState(store.seo_meta_title || "");
   const [seoDesc, setSeoDesc] = useState(store.seo_meta_description || "");
 
+  // --- Socials ---
+  const [socialFacebook, setSocialFacebook] = useState(store.social_facebook || "");
+  const [socialInstagram, setSocialInstagram] = useState(store.social_instagram || "");
+  const [socialTiktok, setSocialTiktok] = useState(store.social_tiktok || "");
+  const [socialFacebookEnabled, setSocialFacebookEnabled] = useState(store.social_facebook_enabled ?? false);
+  const [socialInstagramEnabled, setSocialInstagramEnabled] = useState(store.social_instagram_enabled ?? false);
+  const [socialTiktokEnabled, setSocialTiktokEnabled] = useState(store.social_tiktok_enabled ?? false);
+
   const handleSave = async () => {
     setSaving(true);
     const fd = new FormData();
@@ -181,6 +189,14 @@ export function ClientSettingsPage({ store, ordersThisMonth, plans }: { store: a
     // SEO
     fd.append("seo_meta_title", seoTitle);
     fd.append("seo_meta_description", seoDesc);
+
+    // Socials
+    fd.append("social_facebook", socialFacebook);
+    fd.append("social_instagram", socialInstagram);
+    fd.append("social_tiktok", socialTiktok);
+    fd.append("social_facebook_enabled", String(socialFacebookEnabled));
+    fd.append("social_instagram_enabled", String(socialInstagramEnabled));
+    fd.append("social_tiktok_enabled", String(socialTiktokEnabled));
 
     const res = await saveSettings(fd);
     if (res.success) { toast.success("Settings saved!"); router.refresh(); }
@@ -216,7 +232,7 @@ export function ClientSettingsPage({ store, ordersThisMonth, plans }: { store: a
         <div className="p-7">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="bg-muted rounded-full p-1 h-auto flex-wrap gap-1">
-              {["general", "appearance", "shipping", "payments", "plan", "seo"].map(t => (
+              {["general", "appearance", "shipping", "payments", "plan", "seo", "socials"].map(t => (
                 <TabsTrigger key={t} value={t} className="rounded-full data-[state=active]:bg-background data-[state=active]:shadow-sm px-4 py-1.5 text-sm capitalize">{t}</TabsTrigger>
               ))}
             </TabsList>
@@ -476,6 +492,47 @@ export function ClientSettingsPage({ store, ordersThisMonth, plans }: { store: a
                     <Label className="text-xs text-muted-foreground">Meta description</Label>
                     <Textarea value={seoDesc} onChange={e => setSeoDesc(e.target.value)} className="mt-1.5 rounded-xl resize-none" rows={3} placeholder="Describe your store in one or two sentences…" maxLength={160} />
                     <div className="text-xs text-muted-foreground mt-1">{seoDesc.length}/160 characters</div>
+                  </div>
+                </div>
+              </Panel>
+            </TabsContent>
+
+            {/* ── SOCIALS ── */}
+            <TabsContent value="socials" className="mt-6 space-y-5">
+              <Panel title="Social Media" description="Link your social media profiles to display them on your storefront.">
+                <div className="space-y-6">
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="font-medium text-sm">Facebook</div>
+                      </div>
+                      <Switch checked={socialFacebookEnabled} onCheckedChange={setSocialFacebookEnabled} />
+                    </div>
+                    {socialFacebookEnabled && (
+                      <Input value={socialFacebook} onChange={e => setSocialFacebook(e.target.value)} className="rounded-xl" placeholder="https://facebook.com/yourpage" />
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="font-medium text-sm">Instagram</div>
+                      </div>
+                      <Switch checked={socialInstagramEnabled} onCheckedChange={setSocialInstagramEnabled} />
+                    </div>
+                    {socialInstagramEnabled && (
+                      <Input value={socialInstagram} onChange={e => setSocialInstagram(e.target.value)} className="rounded-xl" placeholder="https://instagram.com/yourhandle" />
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="font-medium text-sm">TikTok</div>
+                      </div>
+                      <Switch checked={socialTiktokEnabled} onCheckedChange={setSocialTiktokEnabled} />
+                    </div>
+                    {socialTiktokEnabled && (
+                      <Input value={socialTiktok} onChange={e => setSocialTiktok(e.target.value)} className="rounded-xl" placeholder="https://tiktok.com/@yourhandle" />
+                    )}
                   </div>
                 </div>
               </Panel>

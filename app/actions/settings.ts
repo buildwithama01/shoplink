@@ -47,6 +47,20 @@ export async function saveSettings(formData: FormData) {
   updates.seo_meta_title = formData.get("seo_meta_title") as string;
   updates.seo_meta_description = formData.get("seo_meta_description") as string;
 
+  updates.social_facebook = formData.get("social_facebook") as string;
+  updates.social_instagram = formData.get("social_instagram") as string;
+  updates.social_tiktok = formData.get("social_tiktok") as string;
+  
+  if (formData.has("social_facebook_enabled")) {
+    updates.social_facebook_enabled = formData.get("social_facebook_enabled") === "true";
+  }
+  if (formData.has("social_instagram_enabled")) {
+    updates.social_instagram_enabled = formData.get("social_instagram_enabled") === "true";
+  }
+  if (formData.has("social_tiktok_enabled")) {
+    updates.social_tiktok_enabled = formData.get("social_tiktok_enabled") === "true";
+  }
+
   const { error } = await supabase.from("stores").update(updates).eq("id", store.id);
   if (error) return { success: false, error: error.message };
 

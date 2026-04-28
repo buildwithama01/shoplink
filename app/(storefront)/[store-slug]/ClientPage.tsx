@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Filter, X } from "lucide-react";
+import { Search, Filter, X, Facebook, Instagram } from "lucide-react";
 import { useState, useMemo } from "react";
 import { StoreNavbar } from "@/components/shop/StoreNavbar";
 import { ProductCard } from "@/components/shop/ProductCard";
@@ -96,9 +96,31 @@ export function StorefrontClient({ store, products, categories }: { store: any, 
             {filtered.map((p, i) => (<ProductCard key={p.id} product={{...p, image: p.images?.[0] || "/placeholder.png"}} index={i} storeSlug={store.slug} />))}
           </div>
         )}
-        <footer className="mt-16 border-t border-border/60 py-8 text-xs text-muted-foreground flex flex-wrap items-center justify-between gap-3">
-          <span>© {new Date().getFullYear()} {store.name}. All rights reserved.</span>
-          <span>Powered by Kozura</span>
+        <footer className="mt-16 border-t border-border/60 py-8 text-xs text-muted-foreground flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row items-center gap-3">
+            <span>© {new Date().getFullYear()} {store.name}. All rights reserved.</span>
+            <span className="hidden sm:inline">·</span>
+            <span>Powered by Kozura</span>
+          </div>
+          <div className="flex items-center gap-4">
+            {store.social_facebook_enabled && store.social_facebook && (
+              <a href={store.social_facebook} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Facebook className="h-4 w-4" />
+              </a>
+            )}
+            {store.social_instagram_enabled && store.social_instagram && (
+              <a href={store.social_instagram} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Instagram className="h-4 w-4" />
+              </a>
+            )}
+            {store.social_tiktok_enabled && store.social_tiktok && (
+              <a href={store.social_tiktok} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+                </svg>
+              </a>
+            )}
+          </div>
         </footer>
       </div>
     </div>

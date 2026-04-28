@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import Link from "next/link";
 import { CheckCircle2, MessageCircle, ArrowLeft, Clock, ShieldCheck, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,8 +9,9 @@ import { StoreNavbar } from "@/components/shop/StoreNavbar";
 export function ClientOrderConfirmationPage({ store, order }: { store: any; order?: any }) {
   const storeSlug = store.slug;
   const orderNumber = order?.order_number ?? "";
+  const [countdown, setCountdown] = useState(3);
 
-  const generateWhatsAppMessage = () => {
+  const buildWhatsAppUrl = useCallback((): string => {
     let message = `*New Order: ${orderNumber}*\n`;
     message += `*Store:* ${store.name}\n\n`;
     if (order) {
@@ -32,9 +33,30 @@ export function ClientOrderConfirmationPage({ store, order }: { store: any; orde
     }
     message += `\nPlease confirm my order. Thank you!`;
     return `https://wa.me/${store.whatsapp_number}?text=${encodeURIComponent(message)}`;
-  };
+  }, [order, orderNumber, store.name, store.whatsapp_number]);
 
-  useEffect(() => { window.scrollTo(0, 0); }, []);
+  const whatsappUrlRef = useRef(buildWhatsAppUrl());
+  const whatsappUrl = whatsappUrlRef.current;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (!store.whatsapp_number) return;
+
+    const interval = setInterval(() => {
+      setCountdown((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+
+    const timer = setTimeout(() => {
+      window.location.href = whatsappUrl;
+    }, 3000);
+
+    return () => {
+      clearTimeout(timer);
+      clearInterval(interval);
+    };
+  // whatsappUrl is derived from server props, stable on mount
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="min-h-screen bg-canvas">
@@ -48,10 +70,15 @@ export function ClientOrderConfirmationPage({ store, order }: { store: any; orde
           <p className="text-muted-foreground text-lg max-w-md mx-auto mb-2">
             Your order <span className="font-semibold text-foreground">#{orderNumber}</span> has been placed successfully.
           </p>
-          <p className="text-sm text-muted-foreground mb-8">Save your order number to track your delivery.</p>
+          <p className="text-sm text-muted-foreground mb-4">Save your order number to track your delivery.</p>
+          {store.whatsapp_number && (
+            <div className="inline-flex items-center gap-2 bg-success/10 text-success px-4 py-2 rounded-full text-sm font-medium animate-pulse mb-2">
+              Redirecting you to WhatsApp in {countdown} seconds…
+            </div>
+          )}
         </div>
 
-        <div className="grid gap-5">
+        <div className="grid gap-5 mt-8">
           {/* Tracking card */}
           <div className="rounded-[20px] border border-border/60 bg-background p-6 flex items-center justify-between gap-4 flex-wrap animate-in fade-in slide-in-from-bottom-4 duration-500 delay-100 fill-mode-both">
             <div>
@@ -73,7 +100,7 @@ export function ClientOrderConfirmationPage({ store, order }: { store: any; orde
               To complete your purchase and arrange delivery, please message us on WhatsApp.
             </p>
             <Button size="lg" className="w-full sm:w-auto bg-success hover:bg-success/90 text-white gap-2 h-14 px-8 text-lg rounded-2xl transition-all hover:scale-105 active:scale-95" asChild>
-              <a href={generateWhatsAppMessage()} target="_blank" rel="noopener noreferrer">
+              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="w-6 h-6" /> Message Store
               </a>
             </Button>
