@@ -107,6 +107,29 @@ export async function placeOrder(formData: FormData) {
 
   if (error) return { success: false, error: error.message };
 
+  // --- Pre-order stock validation ---
+  for (const item of items) {
+    if (!item.productId) continue;
+    const { data: stockCheck } = await supabase
+      .from("products")
+      .select("stock_quantity, name")
+      .eq("id", item.productId)
+      .single();
+
+    if (stockCheck && stockCheck.stock_quantity !== null) {
+      if (stockCheck.stock_quantity <= 0) {
+        return { success: false, error: `"${stockCheck.name}" is out of stock.` };
+      }
+      if (item.quantity > stockCheck.stock_quantity) {
+        return {
+          success: false,
+          error: `Only ${stockCheck.stock_quantity} unit(s) of "${stockCheck.name}" are available.`,
+        };
+      }
+    }
+  }
+  // --- End stock validation ---
+
   // Insert items
   const orderItems = items.map((item: any) => ({
     order_id: order.id,
@@ -121,11 +144,10 @@ export async function placeOrder(formData: FormData) {
   const { error: itemsError } = await supabase.from("order_items").insert(orderItems);
   if (itemsError) return { success: false, error: itemsError.message };
 
-  // --- Deduct stock quantity for each ordered product ---
+  // --- Deduct stock quantity and auto-deactivate when stock hits 0 ---
   for (const item of items) {
     if (!item.productId) continue;
 
-    // Fetch current stock
     const { data: product } = await supabase
       .from("products")
       .select("stock_quantity")
@@ -134,9 +156,16 @@ export async function placeOrder(formData: FormData) {
 
     if (product && product.stock_quantity !== null) {
       const newQty = Math.max(0, product.stock_quantity - item.quantity);
+      const updatePayload: Record<string, any> = { stock_quantity: newQty };
+
+      // Auto-deactivate when out of stock so seller is notified via Inactive badge
+      if (newQty === 0) {
+        updatePayload.is_published = false;
+      }
+
       await supabase
         .from("products")
-        .update({ stock_quantity: newQty })
+        .update(updatePayload)
         .eq("id", item.productId);
     }
   }

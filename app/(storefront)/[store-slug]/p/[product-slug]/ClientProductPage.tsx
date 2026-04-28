@@ -54,9 +54,14 @@ export function ClientProductPage({
   const { addItem, updateQuantity, items: cartItems } = useCart();
   const [adding, setAdding] = useState(false);
 
+  const maxQty = product.stock_quantity ?? Infinity;
   const images = product.images || [];
 
   const handleAddToCart = () => {
+    if (qty > maxQty) {
+      toast.error(`Only ${maxQty} unit(s) available.`);
+      return;
+    }
     setAdding(true);
     const variantLabel = Object.entries(selected)
       .map(([k, v]) => `${k}: ${v}`)
@@ -215,8 +220,9 @@ export function ClientProductPage({
                   {qty}
                 </span>
                 <button
-                  onClick={() => setQty(qty + 1)}
-                  className="h-10 w-10 rounded-full bg-background flex items-center justify-center shadow-sm hover:bg-muted/80 transition-colors"
+                  onClick={() => setQty(Math.min(maxQty, qty + 1))}
+                  disabled={qty >= maxQty}
+                  className="h-10 w-10 rounded-full bg-background flex items-center justify-center shadow-sm hover:bg-muted/80 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <Plus className="h-4 w-4 text-foreground/70" />
                 </button>
@@ -230,6 +236,11 @@ export function ClientProductPage({
                 {adding ? "Adding..." : "Add to cart"}
               </Button>
             </div>
+            {typeof maxQty === "number" && maxQty <= 5 && maxQty > 0 && (
+              <p className="text-xs text-amber-600 font-medium mt-2">
+                ⚡ Only {maxQty} left in stock!
+              </p>
+            )}
             <Accordion
               type="single"
               collapsible
