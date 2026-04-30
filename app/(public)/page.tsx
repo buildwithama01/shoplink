@@ -25,6 +25,7 @@ import {
   Rocket,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { StoreSearch } from "@/components/public/StoreSearch";
 import {
   Accordion,
   AccordionContent,
@@ -299,6 +300,10 @@ export default function LandingPage() {
                     >
                       <Link href="/cruz-gadgets">See a Live Store</Link>
                     </Button>
+                  </div>
+
+                  <div className="w-full mt-12">
+                    <StoreSearch />
                   </div>
 
                   <div className="mt-8 flex items-center gap-2 text-sm text-muted-foreground font-medium">
