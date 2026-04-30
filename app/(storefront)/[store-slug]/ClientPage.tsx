@@ -14,6 +14,13 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const ensureExternalLink = (url: string) => {
   if (!url) return "";
@@ -115,11 +122,28 @@ export function StorefrontClient({ store, products, categories }: { store: any, 
             </div>
           </div>
         )}
-        <div className="mt-6 flex gap-2 overflow-x-auto pb-2 -mx-5 px-5 sm:mx-0 sm:px-0 scrollbar-none">
+        {/* Desktop Categories */}
+        <div className="hidden sm:flex mt-6 gap-2 flex-wrap pb-2">
           {allCategories.map((c) => {
             const isActive = activeCategory === c.id;
             return (<button key={c.id} onClick={() => setActiveCategory(c.id)} className={cn("inline-flex items-center justify-center rounded-full px-5 h-10 text-sm font-medium border whitespace-nowrap transition-all", isActive ? "bg-ink text-ink-foreground border-ink" : "bg-background text-foreground border-border hover:border-foreground/30")}>{c.name || c.label}</button>);
           })}
+        </div>
+
+        {/* Mobile Categories */}
+        <div className="mt-6 sm:hidden">
+          <Select value={activeCategory} onValueChange={setActiveCategory}>
+            <SelectTrigger className="w-full h-12 rounded-2xl bg-background border-border font-medium">
+              <SelectValue placeholder="Select category" />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl max-h-[300px]">
+              {allCategories.map((c) => (
+                <SelectItem key={c.id} value={c.id} className="rounded-lg py-2.5 cursor-pointer">
+                  {c.name || c.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         <div className="mt-10 flex items-baseline justify-between">
           <h2 className="text-xl font-semibold tracking-tight">{activeCategory === "all" ? "All products" : allCategories.find((c) => c.id === activeCategory)?.name}</h2>
