@@ -2,6 +2,9 @@ import { resend, isEmailEnabled, fromEmail } from './resend';
 import { OrderConfirmationEmail } from './templates/order-confirmation';
 import { NewSaleEmail } from './templates/new-sale';
 import { StatusUpdateEmail } from './templates/status-update';
+import { SubscriptionUpgradeEmail } from './templates/subscription-upgrade';
+import { PaymentFailedWarningEmail } from './templates/payment-failed-warning';
+import { SubscriptionCancelledEmail } from './templates/subscription-cancelled';
 import { createClient } from '@/lib/supabase/server';
 import * as React from 'react';
 
@@ -165,7 +168,77 @@ export async function sendStatusUpdate({ order, store, newStatus }: any): Promis
     await logEmailToDatabase(order.customer_email, subject, 'status-update', 'sent');
     return { success: true };
   } catch (err: any) {
-    await logEmailToDatabase(order.customer_email, subject, 'status-update', 'failed', err.message);
+    return { success: false, error: err.message };
+  }
+}
+
+export async function sendSubscriptionUpgrade({ sellerEmail, storeName, planName, amount, nextBillingDate }: any): Promise<EmailResponse> {
+  const subject = `Your Kozura store has been upgraded to ${planName}!`;
+  if (!isEmailEnabled) return { success: true };
+
+  try {
+    const { error } = await resend.emails.send({
+      from: fromEmail,
+      to: sellerEmail,
+      subject,
+      react: SubscriptionUpgradeEmail({
+        storeName,
+        planName,
+        amount,
+        nextBillingDate,
+      }) as React.ReactElement,
+    });
+    if (error) return { success: false, error: error.message };
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+export async function sendPaymentFailedWarning({ sellerEmail, storeName, daysRemaining, gracePeriodEnds }: any): Promise<EmailResponse> {
+  const subject = `Action Required: Payment Failed for ${storeName}`;
+  if (!isEmailEnabled) return { success: true };
+
+  try {
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    const loginUrl = `${siteUrl}/seller/settings`;
+    const { error } = await resend.emails.send({
+      from: fromEmail,
+      to: sellerEmail,
+      subject,
+      react: PaymentFailedWarningEmail({
+        storeName,
+        daysRemaining,
+        gracePeriodEnds,
+        loginUrl,
+      }) as React.ReactElement,
+    });
+    if (error) return { success: false, error: error.message };
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+export async function sendSubscriptionCancelled({ sellerEmail, storeName }: any): Promise<EmailResponse> {
+  const subject = `Your subscription for ${storeName} has been cancelled`;
+  if (!isEmailEnabled) return { success: true };
+
+  try {
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    const loginUrl = `${siteUrl}/seller/settings`;
+    const { error } = await resend.emails.send({
+      from: fromEmail,
+      to: sellerEmail,
+      subject,
+      react: SubscriptionCancelledEmail({
+        storeName,
+        loginUrl,
+      }) as React.ReactElement,
+    });
+    if (error) return { success: false, error: error.message };
+    return { success: true };
+  } catch (err: any) {
     return { success: false, error: err.message };
   }
 }

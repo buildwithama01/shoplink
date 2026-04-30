@@ -35,7 +35,7 @@ export async function placeOrder(formData: FormData) {
 
   // Check order limits
   if (store.subscription_plan) {
-    const { data: plan } = await supabase.from("plans").select("order_limit").eq("id", store.subscription_plan).single();
+    const { data: plan } = await supabase.from("plans").select("order_limit").ilike("name", store.subscription_plan).single();
     if (plan && plan.order_limit !== -1) {
       const startOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
       const { count } = await supabase.from("orders").select("id", { count: "exact", head: true }).eq("store_id", storeId).gte("created_at", startOfMonth);

@@ -1,4 +1,4 @@
-import { Activity, Store, Users, DollarSign } from "lucide-react";
+import { Activity, Store, Users, Banknote } from "lucide-react";
 import { AdminLayout, AdminTopBar } from "@/components/admin/AdminSidebar";
 import { StatCard } from "@/components/shop/StatCard";
 import { createClient } from "@/lib/supabase/server";
@@ -32,8 +32,8 @@ export default async function AdminDashboardPage() {
       <AdminTopBar title="Platform Overview" subtitle="Global metrics for Kozura" />
       <div className="p-7 space-y-6">
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-          <StatCard label="Total GMV" value={formattedGMV} icon={DollarSign} accent="primary" />
-          <StatCard label="Lost Sales" value={formattedLostSales} icon={DollarSign} accent="destructive" />
+          <StatCard label="Total GMV" value={formattedGMV} icon={Banknote} accent="primary" />
+          <StatCard label="Lost Sales" value={formattedLostSales} icon={Banknote} accent="destructive" />
           <StatCard label="Active Stores" value={(activeStoresCount || 0).toString()} icon={Store} accent="warning" />
           <StatCard label="Total Users" value={(usersCount || 0).toString()} icon={Users} accent="success" />
           <StatCard label="System Status" value="Healthy" icon={Activity} accent="muted" />

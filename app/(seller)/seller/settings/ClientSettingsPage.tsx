@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useCallback, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { SellerLayout, SellerTopBar } from "@/components/seller/SellerSidebar";
 import { ImageUploader } from "@/components/shop/ImageUploader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -69,6 +69,25 @@ type DeliveryZone = { label: string; fee: number };
 
 export function ClientSettingsPage({ store, ordersThisMonth, plans }: { store: any; ordersThisMonth: number; plans: any[] }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  useEffect(() => {
+    const success = searchParams.get('success');
+    const error = searchParams.get('error');
+    if (success) {
+      toast.success(success);
+      // Clean up the URL
+      const url = new URL(window.location.href);
+      url.searchParams.delete('success');
+      window.history.replaceState({}, '', url);
+    }
+    if (error) {
+      toast.error(error);
+      const url = new URL(window.location.href);
+      url.searchParams.delete('error');
+      window.history.replaceState({}, '', url);
+    }
+  }, [searchParams]);
   
   const dynamicPlans = plans.map(p => ({
     id: p.name.toLowerCase(), // Or p.id if we update stores table to use plan UUIDs
@@ -83,6 +102,28 @@ export function ClientSettingsPage({ store, ordersThisMonth, plans }: { store: a
   const [activeTab, setActiveTab] = useState("general");
   const [saving, setSaving] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
+  const [upgradingPlan, setUpgradingPlan] = useState<string | null>(null);
+
+  const handleUpgrade = async (planId: string) => {
+    setUpgradingPlan(planId);
+    try {
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ planId }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Failed to initiate payment');
+      
+      // Redirect to Paystack
+      window.location.href = data.authorization_url;
+    } catch (error: any) {
+      toast.error(error.message);
+      setUpgradingPlan(null);
+    }
+  };
 
   // --- General ---
   const [name, setName] = useState(store.name || "");
@@ -208,8 +249,8 @@ export function ClientSettingsPage({ store, ordersThisMonth, plans }: { store: a
     id: "free",
     name: "Free",
     price: "Free",
-    ordersLabel: "20 orders/mo",
-    productsLabel: "10 products",
+    ordersLabel: "5 orders/mo",
+    productsLabel: "5 products",
     color: "bg-muted"
   };
 
@@ -468,7 +509,14 @@ export function ClientSettingsPage({ store, ordersThisMonth, plans }: { store: a
                         <div className="text-xl font-bold">{plan.price}</div>
                         <div className="text-xs text-muted-foreground mt-1">{plan.ordersLabel} · {plan.productsLabel}</div>
                         {!isCurrent && (
-                          <Button size="sm" variant="outline" className="mt-4 w-full rounded-xl" onClick={() => toast.info(`To upgrade to ${plan.name}, contact support.`)}>
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            className="mt-4 w-full rounded-xl" 
+                            disabled={upgradingPlan !== null}
+                            onClick={() => handleUpgrade(plan.id)}
+                          >
+                            {upgradingPlan === plan.id ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
                             Upgrade to {plan.name}
                           </Button>
                         )}

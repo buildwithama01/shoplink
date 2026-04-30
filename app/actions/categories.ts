@@ -32,6 +32,18 @@ export async function saveCategory(formData: FormData) {
   if (id) {
     res = await supabase.from("categories").update(categoryData).eq("id", id).eq("store_id", store.id).select().single();
   } else {
+    // Check plan limits before inserting a new category
+    const { data: storeDetails } = await supabase.from("stores").select("subscription_plan").eq("id", store.id).single();
+    if (storeDetails?.subscription_plan) {
+      const { data: plan } = await supabase.from("plans").select("category_limit").ilike("name", storeDetails.subscription_plan).single();
+      if (plan && plan.category_limit !== -1) {
+        const { count } = await supabase.from("categories").select("id", { count: "exact", head: true }).eq("store_id", store.id);
+        if (count !== null && count >= plan.category_limit) {
+          return { success: false, error: "You have reached the category limit for your current plan. Please upgrade to add more categories." };
+        }
+      }
+    }
+
     res = await supabase.from("categories").insert(categoryData).select().single();
   }
 

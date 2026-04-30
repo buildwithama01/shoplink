@@ -16,6 +16,8 @@ type Plan = {
   price_monthly: number;
   order_limit: number;
   product_limit: number;
+  category_limit: number;
+  image_limit: number;
   bg_color: string;
   popular: boolean;
 };
@@ -25,6 +27,8 @@ function EditPlanDialog({ plan, onSave, onClose }: { plan: Plan; onSave: (update
     price_monthly: plan.price_monthly,
     order_limit: plan.order_limit,
     product_limit: plan.product_limit,
+    category_limit: plan.category_limit,
+    image_limit: plan.image_limit,
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -66,6 +70,24 @@ function EditPlanDialog({ plan, onSave, onClose }: { plan: Plan; onSave: (update
               type="number" 
               value={formData.product_limit} 
               onChange={(e) => setFormData({...formData, product_limit: Number(e.target.value)})}
+              className="w-full rounded-xl border border-border bg-muted/40 px-4 py-2.5 text-sm outline-none focus:border-primary/50 transition-all"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-medium text-muted-foreground ml-1">Category Limit (-1 for Unlimited)</label>
+            <input 
+              type="number" 
+              value={formData.category_limit} 
+              onChange={(e) => setFormData({...formData, category_limit: Number(e.target.value)})}
+              className="w-full rounded-xl border border-border bg-muted/40 px-4 py-2.5 text-sm outline-none focus:border-primary/50 transition-all"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-medium text-muted-foreground ml-1">Images per Product Limit (-1 for Unlimited)</label>
+            <input 
+              type="number" 
+              value={formData.image_limit} 
+              onChange={(e) => setFormData({...formData, image_limit: Number(e.target.value)})}
               className="w-full rounded-xl border border-border bg-muted/40 px-4 py-2.5 text-sm outline-none focus:border-primary/50 transition-all"
             />
           </div>
@@ -126,6 +148,8 @@ export function ClientAdminPlansPage({ initialPlans }: { initialPlans: any[] }) 
                   <TableHead>Monthly Price</TableHead>
                   <TableHead>Order Limit</TableHead>
                   <TableHead>Product Limit</TableHead>
+                  <TableHead>Category Limit</TableHead>
+                  <TableHead>Image Limit</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -149,6 +173,12 @@ export function ClientAdminPlansPage({ initialPlans }: { initialPlans: any[] }) 
                       </TableCell>
                       <TableCell className="text-sm">
                         {formatLimit(plan.product_limit)}
+                      </TableCell>
+                      <TableCell className="text-sm">
+                        {formatLimit(plan.category_limit)}
+                      </TableCell>
+                      <TableCell className="text-sm">
+                        {formatLimit(plan.image_limit)}
                       </TableCell>
                       <TableCell className="text-right">
                         <Button variant="ghost" size="sm" className="rounded-xl h-8 px-3 gap-1.5" onClick={() => setEditingPlan(plan)}>

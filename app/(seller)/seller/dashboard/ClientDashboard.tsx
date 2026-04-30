@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { DollarSign, ShoppingBag, Package, ArrowUpRight, Copy, ExternalLink, Share2, X, Check } from "lucide-react";
+import { Banknote, ShoppingBag, Package, ArrowUpRight, Copy, ExternalLink, Share2, X, Check } from "lucide-react";
 import { SellerLayout, SellerTopBar } from "@/components/seller/SellerSidebar";
 import { StatCard } from "@/components/shop/StatCard";
 import { StatusBadge } from "@/components/shop/StatusBadge";
@@ -65,8 +65,8 @@ export function ClientDashboard({ store, stats, recentOrders }: { store: any, st
             </div>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-            <StatCard label="Total Sales" value={formatNGN(stats.totalSales)} icon={DollarSign} accent="primary" />
-            <StatCard label="Lost Sales" value={formatNGN(stats.lostSales)} icon={DollarSign} accent="destructive" />
+            <StatCard label="Total Sales" value={formatNGN(stats.totalSales)} icon={Banknote} accent="primary" />
+            <StatCard label="Lost Sales" value={formatNGN(stats.lostSales)} icon={Banknote} accent="destructive" />
             <StatCard label="Total Orders" value={String(stats.totalOrders)} icon={ShoppingBag} accent="warning" />
             <StatCard label="Pending" value={String(stats.pendingOrders)} icon={ShoppingBag} accent="muted" />
             <StatCard label="Products" value={String(stats.productsCount)} icon={Package} accent="success" />

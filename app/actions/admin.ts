@@ -61,7 +61,7 @@ export async function updateStorePlan(storeId: string, plan: string) {
   return { success: true };
 }
 
-export async function updatePlanLimits(planId: string, updates: { price_monthly: number; order_limit: number; product_limit: number }) {
+export async function updatePlanLimits(planId: string, updates: { price_monthly: number; order_limit: number; product_limit: number; category_limit: number; image_limit: number }) {
   const supabase = await createClient();
   if (!(await isSuperAdmin(supabase))) return { success: false, error: "Unauthorized" };
 

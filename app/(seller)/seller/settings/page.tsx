@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { ClientSettingsPage } from "./ClientSettingsPage";
+import { Suspense } from "react";
 
 export default async function SellerSettingsPage() {
   const supabase = await createClient();
@@ -29,5 +30,9 @@ export default async function SellerSettingsPage() {
     .eq("store_id", store.id)
     .gte("created_at", startOfMonth);
 
-  return <ClientSettingsPage store={store} ordersThisMonth={ordersThisMonth || 0} plans={plans || []} />;
+  return (
+    <Suspense fallback={<div className="p-8 flex justify-center"><div className="h-6 w-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div></div>}>
+      <ClientSettingsPage store={store} ordersThisMonth={ordersThisMonth || 0} plans={plans || []} />
+    </Suspense>
+  );
 }
