@@ -60,6 +60,8 @@ export function ClientProducts({ initialProducts, categories }: { initialProduct
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [deletingBulk, setDeletingBulk] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const filteredProducts = useMemo(() => {
     let list = productList;
@@ -81,7 +83,14 @@ export function ClientProducts({ initialProducts, categories }: { initialProduct
     return list;
   }, [searchQuery, statusFilter, categoryFilter, productList]);
 
+  // Reset to first page when filters change
+  useMemo(() => {
+    setCurrentPage(1);
+  }, [searchQuery, statusFilter, categoryFilter]);
+
   const activeFiltersCount = (statusFilter !== "all" ? 1 : 0) + (categoryFilter !== "all" ? 1 : 0);
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const paginatedProducts = filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const handleDelete = async (id: string, name: string) => {
     const res = await deleteProduct(id);
@@ -95,10 +104,10 @@ export function ClientProducts({ initialProducts, categories }: { initialProduct
   };
 
   const toggleSelectAll = () => {
-    if (selectedIds.length === filteredProducts.length && filteredProducts.length > 0) {
+    if (selectedIds.length === paginatedProducts.length && paginatedProducts.length > 0) {
       setSelectedIds([]);
     } else {
-      setSelectedIds(filteredProducts.map(p => p.id));
+      setSelectedIds(paginatedProducts.map(p => p.id));
     }
   };
 
@@ -233,7 +242,7 @@ export function ClientProducts({ initialProducts, categories }: { initialProduct
               <tr className="border-b border-border/60 text-left text-muted-foreground text-xs">
                 <th className="pl-5 pr-2 py-3 w-10">
                   <Checkbox 
-                    checked={filteredProducts.length > 0 && selectedIds.length === filteredProducts.length}
+                    checked={paginatedProducts.length > 0 && selectedIds.length === paginatedProducts.length}
                     onCheckedChange={toggleSelectAll}
                   />
                 </th>
@@ -261,7 +270,7 @@ export function ClientProducts({ initialProducts, categories }: { initialProduct
                   </td>
                 </tr>
               ) : (
-                filteredProducts.map((p) => {
+                paginatedProducts.map((p) => {
                   const catName = categories.find(c => c.id === p.category_id)?.name || "Uncategorized";
                   return (
                     <tr key={p.id} className={cn("border-b border-border/60 last:border-b-0 hover:bg-muted/30 transition-colors", selectedIds.includes(p.id) ? "bg-muted/40" : "")}>
@@ -307,6 +316,29 @@ export function ClientProducts({ initialProducts, categories }: { initialProduct
             </tbody>
           </table>
           </div>
+          {filteredProducts.length > 0 && (
+            <div className="p-4 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between text-sm text-muted-foreground gap-4">
+              <div className="flex items-center gap-2">
+                <span>Show</span>
+                <Select value={String(itemsPerPage)} onValueChange={(v) => { setItemsPerPage(Number(v)); setCurrentPage(1); }}>
+                  <SelectTrigger className="h-8 w-16 text-xs rounded-xl"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="10">10</SelectItem>
+                    <SelectItem value="20">20</SelectItem>
+                    <SelectItem value="50">50</SelectItem>
+                    <SelectItem value="100">100</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, filteredProducts.length)} of {filteredProducts.length}
+              </div>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" className="rounded-xl h-8" onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1}>Prev</Button>
+                <Button variant="outline" size="sm" className="rounded-xl h-8" onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages || totalPages === 0}>Next</Button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </SellerLayout>

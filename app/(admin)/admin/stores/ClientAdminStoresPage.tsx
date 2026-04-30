@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AdminLayout, AdminTopBar } from "@/components/admin/AdminSidebar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Zap, TrendingUp, Briefcase, Crown, AlertTriangle, X, ChevronDown, Loader2, MoreVertical } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -97,6 +98,11 @@ export function ClientAdminStoresPage({ initialStores }: { initialStores: any[] 
   const [stores, setStores] = useState(initialStores);
   const [planDialog, setPlanDialog] = useState<any | null>(null);
   const [deleteDialog, setDeleteDialog] = useState<any | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  const totalPages = Math.ceil(stores.length / itemsPerPage);
+  const paginatedStores = stores.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const toggleStatus = async (id: string) => {
     const s = stores.find((s) => s.id === id)!;
@@ -146,7 +152,9 @@ export function ClientAdminStoresPage({ initialStores }: { initialStores: any[] 
             <Table>
               <TableHeader><TableRow className="hover:bg-transparent"><TableHead>Store Name</TableHead><TableHead>Contact Info</TableHead><TableHead>Plan</TableHead><TableHead>Revenue</TableHead><TableHead>Status</TableHead><TableHead className="text-right">Actions</TableHead></TableRow></TableHeader>
               <TableBody>
-                {stores.map((s) => (
+                {stores.length === 0 ? (
+                  <TableRow><TableCell colSpan={6} className="text-center py-8 text-muted-foreground">No stores found</TableCell></TableRow>
+                ) : paginatedStores.map((s) => (
                   <TableRow key={s.id}>
                     <TableCell className="font-semibold">{s.name}</TableCell>
                     <TableCell><div className="flex flex-col"><span className="font-medium text-sm">{s.seller?.full_name || s.account_name}</span><span className="text-[11px] text-muted-foreground">{s.seller?.email || s.contact_email}</span><span className="text-[11px] text-muted-foreground">{s.whatsapp_number}</span></div></TableCell>
@@ -159,6 +167,29 @@ export function ClientAdminStoresPage({ initialStores }: { initialStores: any[] 
               </TableBody>
             </Table>
           </div>
+          {stores.length > 0 && (
+            <div className="p-4 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between text-sm text-muted-foreground gap-4 bg-background rounded-b-[20px] border-x border-b">
+              <div className="flex items-center gap-2">
+                <span>Show</span>
+                <Select value={String(itemsPerPage)} onValueChange={(v) => { setItemsPerPage(Number(v)); setCurrentPage(1); }}>
+                  <SelectTrigger className="h-8 w-16 text-xs rounded-xl"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="10">10</SelectItem>
+                    <SelectItem value="20">20</SelectItem>
+                    <SelectItem value="50">50</SelectItem>
+                    <SelectItem value="100">100</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, stores.length)} of {stores.length}
+              </div>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" className="rounded-xl h-8" onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1}>Prev</Button>
+                <Button variant="outline" size="sm" className="rounded-xl h-8" onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages || totalPages === 0}>Next</Button>
+              </div>
+            </div>
+          )}
         </div>
       </AdminLayout>
       {planDialog && <ChangePlanDialog store={planDialog} onSave={(planId) => changePlan(planDialog.id, planId)} onClose={() => setPlanDialog(null)} />}

@@ -3,7 +3,10 @@
 import { useRouter } from "next/navigation";
 import { SellerLayout, SellerTopBar } from "@/components/seller/SellerSidebar";
 import { StatusBadge } from "@/components/shop/StatusBadge";
+import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 const tabs = [
   { value: "all", label: "All" },
@@ -18,9 +21,20 @@ const formatNGN = (amount: number) => {
 
 export function ClientOrders({ orders }: { orders: any[] }) {
   const router = useRouter();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [activeTab, setActiveTab] = useState("all");
 
-  const renderTable = (list: any[]) => (
-    <div className="rounded-[20px] border border-border/60 overflow-hidden bg-background mt-5">
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeTab]);
+
+  const renderTable = (list: any[]) => {
+    const totalPages = Math.ceil(list.length / itemsPerPage);
+    const paginatedOrders = list.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+    return (
+      <div className="rounded-[20px] border border-border/60 overflow-hidden bg-background mt-5">
       <div className="overflow-x-auto">
         <table className="w-full text-sm min-w-[600px]">
           <thead>
@@ -36,7 +50,7 @@ export function ClientOrders({ orders }: { orders: any[] }) {
         <tbody>
           {list.length === 0 ? (
             <tr><td colSpan={6} className="px-5 py-8 text-center text-muted-foreground">No orders found</td></tr>
-          ) : list.map((o) => (
+          ) : paginatedOrders.map((o) => (
             <tr
               key={o.id}
               className="border-b border-border/60 last:border-b-0 hover:bg-muted/30 transition-colors cursor-pointer"
@@ -55,8 +69,31 @@ export function ClientOrders({ orders }: { orders: any[] }) {
         </tbody>
       </table>
       </div>
+      {list.length > 0 && (
+        <div className="p-4 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between text-sm text-muted-foreground gap-4">
+          <div className="flex items-center gap-2">
+            <span>Show</span>
+            <Select value={String(itemsPerPage)} onValueChange={(v) => { setItemsPerPage(Number(v)); setCurrentPage(1); }}>
+              <SelectTrigger className="h-8 w-16 text-xs rounded-xl"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="10">10</SelectItem>
+                <SelectItem value="20">20</SelectItem>
+                <SelectItem value="50">50</SelectItem>
+                <SelectItem value="100">100</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, list.length)} of {list.length}
+          </div>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" className="rounded-xl h-8" onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1}>Prev</Button>
+            <Button variant="outline" size="sm" className="rounded-xl h-8" onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages || totalPages === 0}>Next</Button>
+          </div>
+        </div>
+      )}
     </div>
-  );
+  )};
 
   return (
     <SellerLayout>
@@ -66,7 +103,7 @@ export function ClientOrders({ orders }: { orders: any[] }) {
         subtitle="Manage incoming orders"
       />
       <div className="p-7">
-        <Tabs defaultValue="all">
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="bg-muted rounded-full p-1 h-auto">
             {tabs.map((t) => (
               <TabsTrigger
