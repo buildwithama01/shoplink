@@ -1,15 +1,26 @@
 "use client";
 
 import { Search, Filter, X, Facebook, Instagram } from "lucide-react";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { StoreNavbar } from "@/components/shop/StoreNavbar";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { cn } from "@/lib/utils";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 const ensureExternalLink = (url: string) => {
   if (!url) return "";
   return url.startsWith("http") ? url : `https://${url}`;
 };
+
+const ITEMS_PER_PAGE = 12;
 
 export function StorefrontClient({ store, products, categories }: { store: any, products: any[], categories: any[] }) {
   const [activeCategory, setActiveCategory] = useState("all");
@@ -17,6 +28,7 @@ export function StorefrontClient({ store, products, categories }: { store: any, 
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"default" | "price-asc" | "price-desc">("default");
   const [filterOpen, setFilterOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Add "all" to categories for the UI
   const allCategories = [{ id: "all", label: "All", slug: "all" }, ...categories];
@@ -35,6 +47,30 @@ export function StorefrontClient({ store, products, categories }: { store: any, 
     if (sortBy === "price-desc") list = [...list].sort((a, b) => b.price - a.price);
     return list;
   }, [activeCategory, searchQuery, sortBy, products, categories]);
+
+  // Reset pagination when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeCategory, searchQuery, sortBy]);
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const paginatedProducts = filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+  const getPageNumbers = () => {
+    const pages = [];
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      if (currentPage <= 3) {
+        pages.push(1, 2, 3, 4, "ellipsis", totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1, "ellipsis", totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+      } else {
+        pages.push(1, "ellipsis", currentPage - 1, currentPage, currentPage + 1, "ellipsis", totalPages);
+      }
+    }
+    return pages;
+  };
 
   return (
     <div className="min-h-screen bg-canvas">
@@ -97,9 +133,60 @@ export function StorefrontClient({ store, products, categories }: { store: any, 
             <button onClick={() => { setSearchQuery(""); setActiveCategory("all"); setSortBy("default"); }} className="mt-2 text-sm underline underline-offset-2 text-muted-foreground hover:text-foreground">Clear all filters</button>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-5">
-            {filtered.map((p, i) => (<ProductCard key={p.id} product={{...p, image: p.images?.[0] || "/placeholder.png"}} index={i} storeSlug={store.slug} />))}
-          </div>
+          <>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-5">
+              {paginatedProducts.map((p, i) => (<ProductCard key={p.id} product={{...p, image: p.images?.[0] || "/placeholder.png"}} index={i} storeSlug={store.slug} />))}
+            </div>
+            
+            {totalPages > 1 && (
+              <div className="mt-12">
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious 
+                        href="#" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (currentPage > 1) setCurrentPage(p => p - 1);
+                        }}
+                        className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                      />
+                    </PaginationItem>
+                    
+                    {getPageNumbers().map((page, i) => (
+                      <PaginationItem key={i}>
+                        {page === "ellipsis" ? (
+                          <PaginationEllipsis />
+                        ) : (
+                          <PaginationLink
+                            href="#"
+                            isActive={currentPage === page}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setCurrentPage(page as number);
+                            }}
+                          >
+                            {page}
+                          </PaginationLink>
+                        )}
+                      </PaginationItem>
+                    ))}
+                    
+                    <PaginationItem>
+                      <PaginationNext 
+                        href="#" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (currentPage < totalPages) setCurrentPage(p => p + 1);
+                        }}
+                        className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              </div>
+            )}
+          </>
         )}
         <footer className="mt-16 border-t border-border/60 py-8 text-xs text-muted-foreground flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex flex-col sm:flex-row items-center gap-3">
@@ -162,3 +249,4 @@ export function StorefrontClient({ store, products, categories }: { store: any, 
     </div>
   );
 }
+
