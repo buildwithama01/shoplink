@@ -215,7 +215,7 @@ export default function LandingPage() {
     );
 
   return (
-    <div className="min-h-screen bg-background selection:bg-primary/20 scroll-smooth">
+    <div className="min-h-screen bg-background selection:bg-primary/20 scroll-smooth overflow-x-hidden">
       <main>
         {/* HERO CONTAINER CARD */}
         <div className="p-4 md:p-6 lg:p-8 pt-6 md:pt-8">
