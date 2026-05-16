@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { addOrderNote } from "@/app/actions/orders";
+import { addOrderNote } from "@/actions/orders";
 
 export function OrderTimelineForm({ orderId }: { orderId: string }) {
   const [note, setNote] = useState("");

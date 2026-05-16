@@ -2,10 +2,7 @@ import { Image as ImageIcon, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-
-const formatNGN = (amount: number) => {
-  return `₦${amount.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
-};
+import { formatNGN } from "@/lib/format";
 
 const tilePalette = [
   "bg-tile-mint",

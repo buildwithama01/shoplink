@@ -15,6 +15,12 @@ const navItems = [
   { href: "/admin/settings", icon: Settings, label: "Settings" },
 ];
 
+async function handleSignOut() {
+  const supabase = createClient();
+  await supabase.auth.signOut();
+  window.location.href = '/admin/login';
+}
+
 export function AdminSidebar() {
   const pathname = usePathname();
   const [adminUser, setAdminUser] = useState<any>(null);
@@ -23,18 +29,10 @@ export function AdminSidebar() {
     async function loadUser() {
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        setAdminUser(user);
-      }
+      if (user) setAdminUser(user);
     }
     loadUser();
   }, []);
-
-  const handleSignOut = async () => {
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    window.location.href = '/admin/login';
-  };
 
   return (
     <aside className="hidden md:flex flex-col w-64 shrink-0 p-5 pr-0">
@@ -91,11 +89,6 @@ export function AdminSidebar() {
 }
 
 export function AdminTopBar({ title, count, subtitle, action }: { title: string; count?: string; subtitle?: string; action?: React.ReactNode }) {
-  const handleSignOut = async () => {
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    window.location.href = '/admin/login';
-  };
 
   return (
     <div className="flex items-center justify-between flex-wrap gap-4 px-4 md:px-7 py-4 md:py-5 border-b border-border/60">

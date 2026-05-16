@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { Search, Store, ArrowRight, Loader2, User } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { searchStores, StoreSearchResult } from "@/app/actions/stores";
+import { searchStores, StoreSearchResult } from "@/actions/stores";
 
 export function StoreSearch() {
   const [query, setQuery] = useState("");

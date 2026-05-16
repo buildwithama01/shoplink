@@ -9,7 +9,7 @@ export type TimelineStep = {
 
 export function OrderTimeline({ steps }: { steps: TimelineStep[] }) {
   return (
-    <ol className="relative space-y-5">
+    <ol className="relative space-y-5" style={{ WebkitPrintColorAdjust: "exact", printColorAdjust: "exact" }}>
       {steps.map((step, i) => {
         const isLast = i === steps.length - 1;
         return (
@@ -17,14 +17,14 @@ export function OrderTimeline({ steps }: { steps: TimelineStep[] }) {
             {!isLast && (
               <span
                 className={cn(
-                  "absolute left-[15px] top-8 h-full w-px",
+                  "absolute left-[15px] top-8 h-full w-px print:border-l print:border-black print:bg-transparent",
                   step.state === "complete" ? "bg-ink" : "bg-border",
                 )}
               />
             )}
             <span
               className={cn(
-                "absolute left-0 top-0 flex h-8 w-8 items-center justify-center rounded-full",
+                "absolute left-0 top-0 flex h-8 w-8 items-center justify-center rounded-full print:border print:border-black print:bg-transparent print:text-black",
                 step.state === "complete" && "bg-ink text-ink-foreground",
                 step.state === "active" && "bg-background border-2 border-ink text-foreground",
                 step.state === "pending" && "bg-background border border-border text-muted-foreground",

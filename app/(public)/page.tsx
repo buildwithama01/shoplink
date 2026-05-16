@@ -33,7 +33,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import Pricing from "@/components/shadcn-space/radix/blocks/pricing-01/pricing";
+import Pricing from "@/components/public/Pricing";
 import { cn } from "@/lib/utils";
 
 const howStepsData = [
@@ -49,7 +49,7 @@ const howStepsData = [
     step_icon: Camera,
     step_title: "Add your products",
     step_description:
-      "Upload your product photos, set your prices, add variants. Your storefront updates instantly — no developer needed.",
+      "Upload your product photos, set your prices, add variants. Your storefront updates instantly no developer needed.",
   },
   {
     step_number: "03",
@@ -506,7 +506,7 @@ export default function LandingPage() {
                   <div className="flex flex-col justify-center">
                     <div className="flex items-center gap-3 mb-2">
                       <span className="text-sm font-bold text-muted-foreground bg-muted px-2.5 py-0.5 rounded-full border border-border/50">
-                        Step {step.step_number}
+                        {step.step_number}
                       </span>
                       <h3 className="text-2xl font-bold text-foreground">
                         {step.step_title}

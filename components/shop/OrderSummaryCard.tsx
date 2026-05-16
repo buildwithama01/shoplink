@@ -5,10 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useParams, useRouter } from "next/navigation";
 import { useCart } from "@/hooks/useCart";
-
-const formatNGN = (amount: number) => {
-  return `₦${amount.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
-};
+import { formatNGN } from "@/lib/format";
 
 export function OrderSummaryCard({ 
   shippingFee = 5000, 

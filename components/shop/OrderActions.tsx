@@ -4,9 +4,9 @@ import { useState } from "react";
 import { Truck, Printer, MessageCircle, XCircle, Loader2, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { updateOrderStatus } from "@/app/actions/orders";
+import { updateOrderStatus } from "@/actions/orders";
 
-export function OrderActions({ orderId, currentStatus }: { orderId: string, currentStatus: string }) {
+export function OrderActions({ orderId, currentStatus, customerPhone, orderNumber }: { orderId: string, currentStatus: string, customerPhone?: string, orderNumber?: string }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleUpdateStatus = async (status: string) => {
@@ -22,6 +22,23 @@ export function OrderActions({ orderId, currentStatus }: { orderId: string, curr
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleWhatsApp = () => {
+    if (!customerPhone) {
+      toast.error("Customer phone number not available");
+      return;
+    }
+
+    let phone = customerPhone.replace(/\D/g, "");
+    if (phone.startsWith("0")) {
+      phone = "234" + phone.substring(1);
+    } else if (phone.length === 10 && !phone.startsWith("234")) {
+      phone = "234" + phone;
+    }
+
+    const message = encodeURIComponent(`Hi, this is regarding your order #${orderNumber || orderId} on our store.`);
+    window.open(`https://wa.me/${phone}?text=${message}`, "_blank");
   };
 
   // Terminal states — no further progression possible
@@ -46,7 +63,7 @@ export function OrderActions({ orderId, currentStatus }: { orderId: string, curr
       <Button variant="outline" className="w-full gap-2" onClick={handlePrint} disabled={isLoading}>
         <Printer className="h-4 w-4" /> Print order
       </Button>
-      <Button variant="outline" className="w-full gap-2" disabled={isLoading}>
+      <Button variant="outline" className="w-full gap-2" onClick={handleWhatsApp} disabled={isLoading}>
         <MessageCircle className="h-4 w-4" /> Send WhatsApp
       </Button>
 

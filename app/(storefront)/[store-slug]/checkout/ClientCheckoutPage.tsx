@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Copy, Check, Building2, UploadCloud, Loader2, Sparkles, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
-import { placeOrder } from "@/app/actions/checkout";
+import { placeOrder } from "@/actions/checkout";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/hooks/useCart";
 
